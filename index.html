@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麦斯镇 MathTown</title>
+<link rel="stylesheet" href="css/main.css?v=2.2.1">
+</head>
+<body>
+
+<!-- ===== Start 界面 ===== -->
+<div id="screen-start" class="screen">
+  <div class="start-bg"></div>
+  <div class="start-content">
+    <h1 class="game-title">麦斯镇</h1>
+    <p class="game-subtitle">MathTown</p>
+    <div class="start-buttons">
+      <button id="btn-enter" class="btn-primary">进入麦斯镇</button>
+      <button id="btn-gallery-start" class="btn-secondary">徽章陈列室</button>
+      <button id="btn-handbook-start" class="btn-secondary">手札</button>
+      <button id="btn-settings-start" class="btn-secondary">设置</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 主菜单（关卡列表） ===== -->
+<div id="screen-main-menu" class="screen" style="display:none">
+  <div class="menu-bg"></div>
+  <div class="menu-container">
+    <div class="menu-header">
+      <h2>选择关卡</h2>
+      <span id="progress-text" class="progress-text"></span>
+    </div>
+    <div id="level-list" class="level-list-vn"></div>
+    <div class="menu-footer">
+      <button id="btn-back-to-start" class="btn-secondary">返回</button>
+      <button id="btn-settings-menu" class="btn-secondary">设置</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 游戏界面 ===== -->
+<div id="screen-game" class="screen" style="display:none">
+  <div class="game-layout">
+    <!-- 左侧：场景 + 对话框 -->
+    <div id="scene-area" class="scene-area">
+      <div id="scene-background" class="scene-background"></div>
+      <div id="character-layer" class="character-layer"></div>
+      <div id="puzzle-container" class="puzzle-container"></div>
+      <!-- 对话框 -->
+      <div id="dialog-box" class="dialog-box-vn" style="display:none">
+        <div id="dialog-speaker" class="dialog-speaker"></div>
+        <div id="dialog-text" class="dialog-text-vn"></div>
+        <div id="dialog-arrow" class="dialog-arrow">▼</div>
+      </div>
+    </div>
+    <!-- 右侧面板 -->
+    <div class="side-panel-vn">
+      <div class="panel-level-name" id="game-level-title">关卡名</div>
+      <div class="panel-timer">
+        <span class="timer-label">通关耗时</span>
+        <span id="timer-display" class="timer-value">00:00:00</span>
+      </div>
+      <div class="panel-tools">
+        <button id="btn-handbook" class="tool-btn" title="手札">📖 手札</button>
+        <button id="btn-hint" class="tool-btn" title="提示">💡 提示</button>
+        <button id="btn-draft" class="tool-btn" title="草稿">✏️ 草稿</button>
+        <button id="btn-menu" class="tool-btn" title="菜单">☰ 菜单</button>
+      </div>
+      <div class="panel-hint-box">
+        <p>剧情中的数学知识会自动记录到手札中。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 结算界面 ===== -->
+<div id="screen-settlement" class="screen" style="display:none">
+  <div class="settlement-bg"></div>
+  <div class="settlement-card">
+    <h2>🎉 通关成功</h2>
+    <div class="settlement-badge" id="set-badge"></div>
+    <div class="settlement-stats">
+      <div class="stat-row"><span>通关耗时</span><span id="set-time">00:00</span></div>
+    </div>
+    <div class="settlement-buttons">
+      <button id="btn-retry" class="btn-primary">再玩一次</button>
+      <button id="btn-back-menu" class="btn-secondary">返回关卡列表</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 徽章陈列室 ===== -->
+<div id="screen-gallery" class="screen" style="display:none">
+  <div class="gallery-bg"></div>
+  <div class="gallery-container">
+    <div class="gallery-header">
+      <h2>徽章陈列室</h2>
+      <span id="gallery-progress" class="progress-text"></span>
+    </div>
+    <div id="gallery-grid" class="gallery-grid-vn"></div>
+    <div class="gallery-footer">
+      <button id="btn-gallery-back" class="btn-secondary">返回</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 手札弹窗 ===== -->
+<div id="handbook-overlay" class="overlay" style="display:none">
+  <div class="overlay-card handbook-card">
+    <div class="overlay-header">
+      <h3>📖 手札</h3>
+      <button id="handbook-close" class="overlay-close">✕</button>
+    </div>
+    <div class="handbook-search-bar">
+      <input id="handbook-search" type="text" placeholder="搜索笔记..." class="search-input">
+      <span id="handbook-count" class="handbook-count"></span>
+    </div>
+    <div id="handbook-list" class="handbook-list-vn"></div>
+    <div class="handbook-pagination">
+      <button id="handbook-prev" class="btn-small">上一页</button>
+      <span id="handbook-page-info" class="page-info">1 / 1</span>
+      <button id="handbook-next" class="btn-small">下一页</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 菜单弹窗 ===== -->
+<div id="menu-overlay" class="overlay" style="display:none">
+  <div class="overlay-card menu-card">
+    <div class="overlay-header">
+      <h3>☰ 菜单</h3>
+      <button id="menu-close" class="overlay-close">✕</button>
+    </div>
+    <div class="menu-options">
+      <button id="menu-restart" class="menu-option">🔄 重新开始本关</button>
+      <button id="menu-quit" class="menu-option">🚪 返回关卡列表</button>
+      <button id="menu-settings" class="menu-option">⚙️ 设置</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 草稿弹窗 ===== -->
+<div id="draft-overlay" class="overlay" style="display:none">
+  <div class="overlay-card draft-card">
+    <div class="overlay-header">
+      <h3>✏️ 草稿</h3>
+      <div class="draft-tools">
+        <button id="draft-clear" class="btn-small">清空</button>
+        <button id="draft-close" class="overlay-close">✕</button>
+      </div>
+    </div>
+    <div class="draft-canvas-wrap">
+      <canvas id="draft-canvas"></canvas>
+    </div>
+    <p class="draft-hint">在泛黄的稿纸上自由计算、涂鸦。关闭后内容保留，退出关卡后清空。</p>
+  </div>
+</div>
+
+<!-- ===== 设置弹窗 ===== -->
+<div id="settings-overlay" class="overlay" style="display:none">
+  <div class="overlay-card settings-card">
+    <div class="overlay-header">
+      <h3>⚙️ 设置</h3>
+      <button id="btn-close-settings" class="overlay-close">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="setting-row">
+        <label>背景音乐音量</label>
+        <input id="bgm-volume" type="range" min="0" max="100" value="60">
+      </div>
+      <div class="setting-row">
+        <label>音效音量</label>
+        <input id="sfx-volume" type="range" min="0" max="100" value="80">
+      </div>
+      <div class="setting-row">
+        <button id="btn-export-save" class="btn-small">导出存档</button>
+        <button id="btn-clear-save" class="btn-small btn-danger">清空存档</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 通用模态弹窗 ===== -->
+<div id="modal-overlay" class="overlay" style="display:none">
+  <div class="overlay-card modal-card">
+    <h3 id="modal-title">提示</h3>
+    <p id="modal-text"></p>
+    <button id="modal-ok" class="btn-primary">确定</button>
+  </div>
+</div>
+
+<!-- ===== Loading 界面 ===== -->
+<div id="loading-overlay" class="overlay" style="display:none">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <p id="loading-text">正在加载...</p>
+    <div class="loading-bar"><div id="loading-progress" class="loading-progress"></div></div>
+  </div>
+</div>
+
+<script src="js/system/storage.js?v=2.2.1"></script>
+<script src="js/system/audio.js?v=2.2.1"></script>
+<script src="js/system/pack_loader.js?v=2.2.1"></script>
+<script src="js/system/story_engine.js?v=2.2.1"></script>
+<script src="js/system/session.js?v=2.2.1"></script>
+<script src="js/system/settler.js?v=2.2.1"></script>
+<script src="js/ui/ui_manager.js?v=2.2.1"></script>
+<script src="js/main.js?v=2.2.1"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>货架清点</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "SimSun", serif;
+    background: linear-gradient(135deg, #f5e6c8 0%, #ede0c0 50%, #e8d9b5 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .shelf-card {
+    background: #fdf6e3;
+    border: 3px solid #c9a96e;
+    border-radius: 10px;
+    padding: 36px 40px;
+    max-width: 580px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(139,105,20,0.25);
+  }
+  .shelf-title {
+    text-align: center;
+    font-size: 22px;
+    color: #6b4e1e;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .shelf-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #a08050;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+  .problem-text {
+    background: rgba(201,169,110,0.12);
+    border-left: 4px solid #c9a96e;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #4a3a1a;
+  }
+  .problem-text strong { color: #8b4513; }
+  .sequence-display {
+    text-align: center;
+    font-size: 17px;
+    color: #6b4e1e;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: rgba(139,105,20,0.06);
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .input-row label { font-size: 15px; color: #6b4e1e; white-space: nowrap; }
+  .input-row input {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 18px;
+    border: 2px solid #c9a96e;
+    border-radius: 6px;
+    background: #fff;
+    color: #4a3a1a;
+    font-family: inherit;
+    text-align: center;
+  }
+  .input-row input:focus {
+    outline: none;
+    border-color: #8b6914;
+    box-shadow: 0 0 0 3px rgba(139,105,20,0.15);
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #8b6914, #a67c00);
+    color: #fdf6e3;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 2px;
+    transition: transform 0.1s, box-shadow 0.2s;
+  }
+  .submit-btn:hover { box-shadow: 0 4px 16px rgba(139,105,20,0.4); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .feedback {
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+  }
+  .feedback.error { display: block; background: rgba(180,60,60,0.1); color: #a03030; border: 1px solid #d08080; }
+  .feedback.success { display: block; background: rgba(60,140,80,0.1); color: #2a7a40; border: 1px solid #80c090; }
+</style>
+</head>
+<body>
+  <div class="shelf-card">
+    <div class="shelf-title">🗄️ 货架清点</div>
+    <div class="shelf-subtitle">杂货铺的罐头货架</div>
+    <div class="problem-text">
+      杂货铺的罐头货架共有 <strong>9 层</strong>。<br>
+      最上层放了 <strong>4</strong> 个罐头，往下每层都比上一层多放 <strong>3</strong> 个，最底层放了 <strong>28</strong> 个。<br><br>
+      请计算：这个货架上一共放了多少个罐头？
+    </div>
+    <div class="sequence-display">4，7，10，13，16，19，22，25，28</div>
+    <div class="input-row">
+      <label>总计：</label>
+      <input type="number" id="answer" placeholder="输入答案" min="0">
+      <label>个</label>
+    </div>
+    <button class="submit-btn" id="submit">提交答案</button>
+    <div class="feedback" id="feedback"></div>
+  </div>
+<script>
+  const CORRECT = 144; // (4+28)*9/2 = 144
+  const input = document.getElementById('answer');
+  const btn = document.getElementById('submit');
+  const fb = document.getElementById('feedback');
+  function submit() {
+    const val = parseInt(input.value, 10);
+    if (isNaN(val)) { fb.className='feedback error'; fb.textContent='请输入一个数字。'; return; }
+    if (val === CORRECT) {
+      fb.className='feedback success'; fb.textContent='正确！货架清点完毕。';
+      setTimeout(() => parent.postMessage({protocol:'mathtown-puzzle',action:'complete',puzzleId:'shelf'},'*'), 800);
+    } else {
+      fb.className='feedback error';
+      fb.textContent = Math.abs(val-CORRECT) > 30 ? '答案相差较远，试试首尾配对的思路。' : '答案不正确，再检查一下层数和计算。';
+    }
+  }
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', e => { if(e.key==='Enter') submit(); });
+</script>
+</body>
+</html>

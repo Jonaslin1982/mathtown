@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>齿轮机关</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "SimSun", serif;
+    background: linear-gradient(135deg, #2a2a3e 0%, #3a3a52 50%, #2e2e44 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .gear-card {
+    background: #f5e6c8;
+    border: 3px solid #c9a96e;
+    border-radius: 10px;
+    padding: 36px 40px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .gear-title {
+    text-align: center;
+    font-size: 22px;
+    color: #6b4e1e;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .gear-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #a08050;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+  .problem-text {
+    background: rgba(201,169,110,0.12);
+    border-left: 4px solid #c9a96e;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #4a3a1a;
+  }
+  .problem-text strong { color: #8b4513; }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .input-row label { font-size: 15px; color: #6b4e1e; white-space: nowrap; }
+  .input-row input {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 18px;
+    border: 2px solid #c9a96e;
+    border-radius: 6px;
+    background: #fff;
+    color: #4a3a1a;
+    font-family: inherit;
+    text-align: center;
+  }
+  .input-row input:focus {
+    outline: none;
+    border-color: #8b6914;
+    box-shadow: 0 0 0 3px rgba(139,105,20,0.15);
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #8b6914, #a67c00);
+    color: #fdf6e3;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 2px;
+    transition: transform 0.1s, box-shadow 0.2s;
+  }
+  .submit-btn:hover { box-shadow: 0 4px 16px rgba(139,105,20,0.4); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .feedback {
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+  }
+  .feedback.error { display: block; background: rgba(180,60,60,0.1); color: #a03030; border: 1px solid #d08080; }
+  .feedback.success { display: block; background: rgba(60,140,80,0.1); color: #2a7a40; border: 1px solid #80c090; }
+</style>
+</head>
+<body>
+  <div class="gear-card">
+    <div class="gear-title">⚙️ 齿轮机关</div>
+    <div class="gear-subtitle">第一道机关 · 传动比</div>
+    <div class="problem-text">
+      两组咬合的黄铜齿轮：<br><br>
+      大齿轮有 <strong>48</strong> 个齿，小齿轮有 <strong>16</strong> 个齿。<br><br>
+      当大齿轮转动 <strong>1</strong> 圈时，小齿轮会转动多少圈？<br><br>
+      <em>提示：咬合的齿轮，齿数越多转得越慢，齿数越少转得越快。</em>
+    </div>
+    <div class="input-row">
+      <label>小齿轮转：</label>
+      <input type="number" id="answer" placeholder="输入圈数" min="0" step="0.1">
+      <label>圈</label>
+    </div>
+    <button class="submit-btn" id="submit">提交答案</button>
+    <div class="feedback" id="feedback"></div>
+  </div>
+<script>
+  const CORRECT = 3;
+  const input = document.getElementById('answer');
+  const btn = document.getElementById('submit');
+  const fb = document.getElementById('feedback');
+  function submit() {
+    const val = parseFloat(input.value);
+    if (isNaN(val)) { fb.className='feedback error'; fb.textContent='请输入一个数字。'; return; }
+    if (Math.abs(val - CORRECT) < 0.01) {
+      fb.className='feedback success'; fb.textContent='正确！齿轮开始转动，机关解锁。';
+      setTimeout(() => parent.postMessage({protocol:'mathtown-puzzle',action:'complete',puzzleId:'gears'},'*'), 800);
+    } else {
+      fb.className='feedback error';
+      fb.textContent = '答案不正确。想想大齿轮的48个齿全部走过时，小齿轮16个齿要走几轮？';
+    }
+  }
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', e => { if(e.key==='Enter') submit(); });
+</script>
+</body>
+</html>

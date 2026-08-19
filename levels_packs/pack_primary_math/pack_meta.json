@@ -1,0 +1,12 @@
+{
+  "pack_id": "com.mathtown.primary_math",
+  "pack_name": "麦斯镇·小学数学谜题集",
+  "version": "1.0.0",
+  "author": "MathTown Team",
+  "description": "义务教育数学课标+数学史启蒙解谜包，10位数学家的经典成就复刻",
+  "api_version_required": 2,
+  "levels": [
+    { "level_id": "gauss_grocery", "folder": "L001_gauss_grocery" },
+    { "level_id": "zu_clocktower", "folder": "L002_zu_clocktower" }
+  ]
+}

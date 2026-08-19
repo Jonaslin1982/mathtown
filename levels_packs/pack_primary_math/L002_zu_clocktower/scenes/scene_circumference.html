@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>铜环周长</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "SimSun", serif;
+    background: linear-gradient(135deg, #2a2a3e 0%, #3a3a52 50%, #2e2e44 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .circ-card {
+    background: #f5e6c8;
+    border: 3px solid #c9a96e;
+    border-radius: 10px;
+    padding: 36px 40px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .circ-title {
+    text-align: center;
+    font-size: 22px;
+    color: #6b4e1e;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .circ-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #a08050;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+  .problem-text {
+    background: rgba(201,169,110,0.12);
+    border-left: 4px solid #c9a96e;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #4a3a1a;
+  }
+  .problem-text strong { color: #8b4513; }
+  .formula-box {
+    background: rgba(139,105,20,0.08);
+    border: 1px dashed #c9a96e;
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 16px;
+    color: #6b4e1e;
+    font-weight: bold;
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .input-row label { font-size: 15px; color: #6b4e1e; white-space: nowrap; }
+  .input-row input {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 18px;
+    border: 2px solid #c9a96e;
+    border-radius: 6px;
+    background: #fff;
+    color: #4a3a1a;
+    font-family: inherit;
+    text-align: center;
+  }
+  .input-row input:focus {
+    outline: none;
+    border-color: #8b6914;
+    box-shadow: 0 0 0 3px rgba(139,105,20,0.15);
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #8b6914, #a67c00);
+    color: #fdf6e3;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 2px;
+    transition: transform 0.1s, box-shadow 0.2s;
+  }
+  .submit-btn:hover { box-shadow: 0 4px 16px rgba(139,105,20,0.4); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .feedback {
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+  }
+  .feedback.error { display: block; background: rgba(180,60,60,0.1); color: #a03030; border: 1px solid #d08080; }
+  .feedback.success { display: block; background: rgba(60,140,80,0.1); color: #2a7a40; border: 1px solid #80c090; }
+</style>
+</head>
+<body>
+  <div class="circ-card">
+    <div class="circ-title">⭕ 铜环周长</div>
+    <div class="circ-subtitle">第三道机关 · 圆周率验证</div>
+    <div class="problem-text">
+      石台上嵌着一个黄铜圆环，这是祖冲之当年验证圆周率的器物之一。<br><br>
+      铜环的直径是 <strong>20</strong> 厘米。<br>
+      机关要求用祖冲之的圆周率近似值 <strong>π ≈ 3.14</strong>，算出铜环的周长。<br><br>
+      周长正确，铜环就会发光，大钟就能重启。
+    </div>
+    <div class="formula-box">圆的周长 = 直径 × π</div>
+    <div class="input-row">
+      <label>周长：</label>
+      <input type="number" id="answer" placeholder="输入周长" min="0" step="0.1">
+      <label>厘米</label>
+    </div>
+    <button class="submit-btn" id="submit">提交答案</button>
+    <div class="feedback" id="feedback"></div>
+  </div>
+<script>
+  const CORRECT = 62.8;
+  const input = document.getElementById('answer');
+  const btn = document.getElementById('submit');
+  const fb = document.getElementById('feedback');
+  function submit() {
+    const val = parseFloat(input.value);
+    if (isNaN(val)) { fb.className='feedback error'; fb.textContent='请输入一个数字。'; return; }
+    if (Math.abs(val - CORRECT) < 0.01) {
+      fb.className='feedback success'; fb.textContent='正确！铜环亮起金光，大钟即将重启。';
+      setTimeout(() => parent.postMessage({protocol:'mathtown-puzzle',action:'complete',puzzleId:'circumference'},'*'), 800);
+    } else {
+      fb.className='feedback error';
+      fb.textContent = '答案不正确。周长 = 直径 × π = 20 × 3.14，再算算看。';
+    }
+  }
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', e => { if(e.key==='Enter') submit(); });
+</script>
+</body>
+</html>

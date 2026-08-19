@@ -1,0 +1,78 @@
+{
+  "characters": {
+    "zhongbo": {
+      "name": "钟伯",
+      "color": "#8b6914",
+      "portraits": {
+        "normal": "assets/characters/zhongbo_normal.png",
+        "happy": "assets/characters/zhongbo_happy.png"
+      }
+    },
+    "xiaohe": {
+      "name": "小禾",
+      "color": "#3a6a8a",
+      "portraits": {
+        "normal": "assets/characters/xiaohe_normal.png",
+        "curious": "assets/characters/xiaohe_curious.png"
+      }
+    }
+  },
+  "script": [
+    { "type": "bg", "src": "assets/images/bg_tower_base.png" },
+    { "type": "bgm", "src": "assets/audio/bgm_tower.mp3" },
+    { "type": "narration", "text": "麦斯镇中心的古钟楼，已经停摆整整三天了。没有了清晨的钟声，镇上的人们起床晚了，集市开得迟了，连私塾里的读书声都慢了半拍。" },
+    { "type": "narration", "text": "钟楼底层的石砌大厅里，火把噼啪作响。巨大的木质齿轮机关沉默地立在中央，墙上的钟面指针凝固在一个陌生的时刻。" },
+    { "type": "show", "character": "zhongbo", "position": "right", "expression": "normal" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "唉……又停了。这座钟可是祖冲之先生亲手设计的图样，传了十几代人，如今连我也修不好它了。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "三天前，钟面上的指针突然卡住，齿轮机关发出一声闷响，就再也不动了。我检查了三天，也没找到毛病出在哪里。" },
+    { "type": "show", "character": "xiaohe", "position": "left", "expression": "normal" },
+    { "type": "dialog", "speaker": "xiaohe", "text": "钟伯！我把镇上的铁匠、木匠都问遍了，没人敢碰这座钟。他们都说，这钟里的机关是从天上传下来的，凡人动不得。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "什么从天上传下来的，是从书里传下来的。这座钟的图样，出自南北朝时期一位叫祖冲之的数学家之手。" },
+    { "type": "dialog", "speaker": "xiaohe", "portrait": "curious", "text": "祖冲之？我听私塾先生提过这个名字，好像是算什么……圆的周长很厉害？" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "不止如此。祖冲之先生在一千五百年前，就把圆周率算到了小数点后第七位——3.1415926到3.1415927之间。这个精度，领先了世界将近一千年。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "他还编制了《大明历》，第一次把岁差引入历法；造出了不用人力就能自动转向的指南车，还有日行百里的千里船。齿轮传动，正是他最擅长的技艺之一。" },
+    { "type": "dialog", "speaker": "xiaohe", "text": "哇……那他一定很聪明！可是钟伯，这么厉害的人造的钟，怎么会说停就停了呢？" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "这座钟有三道机关，一道比一道深。第一道是齿轮传动，第二道是钟面刻度，第三道……连我也只在祖传的笔记里见过记载。三道机关全部解开，大钟才能重新转动。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "我老了，眼睛花了，算不动了。小禾，你愿不愿意陪我一道一道解开？就当是……跟祖冲之先生对一次话。" },
+    { "type": "dialog", "speaker": "xiaohe", "text": "我愿意！钟伯你说，第一道机关在哪里？" },
+    { "type": "narration", "text": "钟伯带着小禾走到中央的齿轮机关前。火把的光照在黄铜齿轮上，反射出温暖的光泽。三组咬合的齿轮静静排列，最大的齿轮上清晰地刻着齿数。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "第一道机关，就是这组齿轮。你看——大齿轮有四十八个齿，咬合的小齿轮有十六个齿。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "机关的刻度上写着：大齿轮转动一圈时，小齿轮需要转动几圈，才能让机关的刻痕对齐。你算算看。" },
+    { "type": "dialog", "speaker": "xiaohe", "portrait": "curious", "text": "大的四十八齿，小的十六齿……大的转一圈，走过四十八个齿，小的每个齿都要跟上，那就是……四十八除以十六？" },
+    { "type": "puzzle", "id": "gears", "scene": "scene_gears", "hint": "咬合的两个齿轮，大齿轮转一圈走过的总齿数，等于小齿轮转过的总齿数。大齿轮有48个齿，小齿轮有16个齿——想想48里面包含了几个16？" },
+    { "type": "dialog", "speaker": "zhongbo", "portrait": "happy", "text": "没错！三圈！咬合的两个齿轮，齿数和转数成反比——齿数越多的，转得越慢；齿数越少的，转得越快。四十八除以十六，正好是三。" },
+    { "type": "narration", "text": "随着答案确认，齿轮机关发出低沉的嗡鸣，三组齿轮开始缓缓转动。黄铜的齿牙相互咬合，发出清脆的咔哒声，像是沉睡多年的巨兽苏醒过来的呼吸。" },
+    { "type": "handbook", "title": "齿轮传动比", "content": "两个相互咬合的齿轮，齿数与转数成反比。公式：小齿轮转数 = 大齿轮齿数 ÷ 小齿轮齿数。例如大齿轮48齿、小齿轮16齿，大齿轮转1圈时小齿轮转48÷16=3圈。齿轮传动是机械钟表的核心原理，祖冲之曾将其应用于指南车和千里船的设计中。" },
+    { "type": "dialog", "speaker": "xiaohe", "text": "钟伯你看！齿轮转起来了！可是……墙上的钟面指针怎么还不动？" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "因为第二道机关还没解开。齿轮转动带动的是钟面的内部结构，但指针要走到正确的位置，需要先校准钟面刻度。" },
+    { "type": "narration", "text": "钟伯走到巨大的钟面下方，伸手拂去钟面上的灰尘。钟面上十二个刻度清晰可见，指针此刻停在一个奇怪的角度。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "钟面是一个圆，一圈三百六十度。十二个数字把圆分成了十二等份，每两个相邻数字之间的夹角是三十度。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "机关要求指针指向四点整的位置——也就是时针指向四、分针指向十二的时候。你算算，这时候时针和分针之间的夹角是多少度？" },
+    { "type": "dialog", "speaker": "xiaohe", "portrait": "curious", "text": "四点整……时针在四，分针在十二，中间隔了四个数字格。每格三十度，那就是四乘三十……一百二十度？" },
+    { "type": "puzzle", "id": "clock", "scene": "scene_clock", "hint": "钟面一圈360度，12个数字把它平均分成了12份。先算出每两个相邻数字之间的夹角是多少度，再看4点整时，时针和分针之间隔了几个数字。" },
+    { "type": "dialog", "speaker": "zhongbo", "portrait": "happy", "text": "正确！四乘三十等于一百二十度。钟面上每一个数字间隔都是三十度，几点整就用几乘三十——这是最基础的钟面角度计算。" },
+    { "type": "narration", "text": "话音刚落，钟面上的指针咔哒一声，自动归位到四点整的位置。黄铜指针在火光下闪了一下，钟面边缘的装饰花纹似乎也亮了起来。" },
+    { "type": "handbook", "title": "钟面角度计算", "content": "钟面一圈360度，被12个数字等分为12格，每格30度。计算整点时针与分针的夹角：几点整就用几乘30度。例如3点整=3×30=90度，4点整=4×30=120度，6点整=6×30=180度。如果结果大于180度，用360度减去它得到较小夹角。" },
+    { "type": "dialog", "speaker": "xiaohe", "text": "钟伯！钟面下面……好像有什么东西在发光！" },
+    { "type": "narration", "text": "小禾指着钟面下方。随着指针归位，钟面底座缓缓移开，露出一个嵌在石台上的黄铜圆环。圆环上刻满了细密的刻度，在火光下泛着温润的光泽。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "这就是第三道机关——祖冲之先生留下的铜环。祖传笔记里写着，这个铜环是先生当年验证圆周率的器物之一。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "在祖冲之之前，三国时期的数学家刘徽发明了「割圆术」——从圆内接正六边形开始，不断把边数加倍，用多边形的周长逼近圆的周长。刘徽算到了正一百九十二边形，得到圆周率约等于3.14。" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "祖冲之在刘徽的基础上继续割圆，一直算到正二万四千五百七十六边形，才得到了3.1415926到3.1415927之间的精确结果。在没有计算器的年代，这需要进行上万次的加减乘除和开方运算。" },
+    { "type": "dialog", "speaker": "xiaohe", "portrait": "curious", "text": "上万次运算……那他算完的时候，手一定很酸吧。可是钟伯，这个铜环跟圆周率有什么关系呢？" },
+    { "type": "dialog", "speaker": "zhongbo", "text": "铜环的直径是二十厘米。机关要求用圆周率的近似值3.14，算出这个铜环的周长。" },
+    { "type": "dialog", "speaker": "xiaohe", "portrait": "curious", "text": "圆的周长……直径和周长之间有什么关系呢？钟伯，我得好好想想。" },
+    { "type": "puzzle", "id": "circumference", "scene": "scene_circumference", "hint": "任何一个圆，它的周长除以直径，得到的都是同一个固定的数——这个数就是圆周率π。题目已经告诉你π取3.14，也告诉你直径是20厘米了。" },
+    { "type": "dialog", "speaker": "zhongbo", "portrait": "happy", "text": "哈哈哈哈！对了！六十二点八厘米！祖冲之先生在天有灵，一定会很高兴的——一千五百年后，还有孩子在用他算出来的数字修钟。" },
+    { "type": "narration", "text": "铜环骤然亮起金色的光芒，光芒顺着石台的纹路蔓延到齿轮机关，再爬上钟面。整个钟楼开始震动，巨大的钟摆从高处缓缓落下，发出一声沉闷而悠远的——" },
+    { "type": "narration", "text": "当——" },
+    { "type": "narration", "text": "大钟重新敲响了。钟声穿过石墙，穿过钟楼的窗棂，穿过麦斯镇的街道，传到每一个人的耳朵里。镇上的人们停下手中的活计，抬头望向钟楼的方向，露出了笑容。" },
+    { "type": "handbook", "title": "祖冲之与圆周率", "content": "祖冲之（公元429-500年），南北朝时期杰出的数学家、天文学家。他在刘徽「割圆术」的基础上，将圆周率精确到小数点后第七位（3.1415926~3.1415927），领先世界近千年。圆的周长公式：周长 = 直径 × π。他还编制《大明历》、制造指南车和千里船，其子祖暅之也是数学家，父子合著《缀术》。" },
+    { "type": "hide", "character": "xiaohe" },
+    { "type": "hide", "character": "zhongbo" },
+    { "type": "bg", "src": "assets/images/bg_pendulum.png" },
+    { "type": "narration", "text": "钟楼深处的密室门缓缓打开。石台上，一枚泛着金光的计时徽章静静躺着，齿轮和钟摆的纹样在徽章上交错，边缘环绕着3.1415926的数字。" },
+    { "type": "narration", "text": "小禾小心翼翼地拿起徽章。钟伯站在他身后，火光映在老人温和的眼睛里。" },
+    { "type": "narration", "text": "「记住今天，小禾。」钟伯轻声说，「数学不是书本上冰冷的数字，它是活的——它在齿轮里，在钟面上，在每一个圆的周长里。」" },
+    { "type": "win" }
+  ]
+}

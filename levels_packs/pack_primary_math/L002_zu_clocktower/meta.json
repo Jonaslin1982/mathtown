@@ -1,0 +1,15 @@
+{
+  "level_id": "zu_clocktower",
+  "level_name": "钟楼的齿轮密语",
+  "description": "麦斯镇中心的古钟楼停摆了。解开齿轮传动、钟面刻度和圆周率三道机关，让大钟重新转动，取得计时徽章。",
+  "thumbnail": "assets/images/thumbnail.png",
+  "unlock_condition": { "type": "complete_level", "level": "com.mathtown.primary_math:gauss_grocery" },
+  "badge": {
+    "name": "计时徽章",
+    "description": "掌握齿轮传动与圆周率计算的证明，以齿轮、钟摆和圆周率数字为形。",
+    "image": "assets/badges/badge_time.png"
+  },
+  "audio": {
+    "bgm": "assets/audio/bgm_tower.mp3"
+  }
+}

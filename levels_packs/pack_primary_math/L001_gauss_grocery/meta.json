@@ -1,0 +1,15 @@
+{
+  "level_id": "gauss_grocery",
+  "level_name": "暖阳杂货铺的速算密码",
+  "description": "一七八七年的德国小镇，十岁的小高斯在杂货铺里遇到了一道算账难题。用首尾配对法快速算出数列之和，揭开速算的秘密。",
+  "thumbnail": "assets/images/thumbnail.png",
+  "unlock_condition": { "type": "none" },
+  "badge": {
+    "name": "速算徽章",
+    "description": "掌握等差数列首尾配对速算法的证明。",
+    "image": "assets/badges/badge_speed.png"
+  },
+  "audio": {
+    "bgm": "assets/audio/bgm_shop.mp3"
+  }
+}

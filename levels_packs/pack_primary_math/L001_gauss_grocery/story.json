@@ -1,0 +1,242 @@
+{
+  "version": "1.0",
+  "characters": {
+    "gauss": {
+      "name": "小高斯",
+      "color": "#3a6a8a",
+      "portraits": {
+        "normal": "assets/characters/gauss_normal.png",
+        "happy": "assets/characters/gauss_happy.png"
+      }
+    },
+    "buttner": {
+      "name": "布特纳先生",
+      "color": "#8b6914",
+      "portraits": {
+        "normal": "assets/characters/buttner_normal.png",
+        "surprised": "assets/characters/buttner_surprised.png"
+      }
+    }
+  },
+  "nodes": [
+    {
+      "type": "bg",
+      "src": "assets/images/bg_shop_front.png"
+    },
+    {
+      "type": "bgm",
+      "src": "assets/audio/bgm_shop.mp3"
+    },
+    {
+      "type": "narration",
+      "text": "一七八七年的秋天，德国北部的布伦瑞克小镇。午后的阳光斜斜地照进街角的杂货铺，木地板上浮动着细细的尘埃。"
+    },
+    {
+      "type": "narration",
+      "text": "铺子里弥漫着咖啡豆、干果和旧纸张混合的气味。柜台后面，店主布特纳先生正对着一本厚厚的账本，眉头紧锁。"
+    },
+    {
+      "type": "show",
+      "charId": "buttner",
+      "portrait": "normal",
+      "position": "right"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "唉……这一周的进货账，怎么算也算不完。每天的件数都不一样，一笔一笔加起来，加到后来自己都糊涂了。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "最近二十天的进货账，第一天一件，第二天两件，每天多一件，到第二十天整整二十件。这二十天的数加在一起，到底是多少呢？"
+    },
+    {
+      "type": "narration",
+      "text": "布特纳先生摘下圆框眼镜，揉了揉发酸的眼角。柜台上的羽毛笔搁在墨水瓶边，账本上密密麻麻写满了数字，却始终没有一个最终的总和。"
+    },
+    {
+      "type": "show",
+      "charId": "gauss",
+      "portrait": "normal",
+      "position": "left"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "布特纳先生，您好。我来买半磅黄油。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "哦，是小高斯啊。稍等一下，我这账还没算完……唉，算了半天也没算清楚。"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "您在算什么账？也许我可以帮忙看看。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "你？你才十岁吧。这账可不是简单的加法，从一加到二十，一笔一笔加起来很容易出错的。"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "让我试试吧。我在学校里也喜欢琢磨数字的规律。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "好吧，那你看看。第一天一件，第二天两件，每天多一件，到第二十天二十件。这二十天总共进了多少件货？"
+    },
+    {
+      "type": "narration",
+      "text": "小高斯走到柜台前，低头看着账本上那一串数字。他没有急着动笔，而是微微歪着头，目光在数字之间来回移动。"
+    },
+    {
+      "type": "puzzle",
+      "puzzleId": "ledger",
+      "scene": "scene_ledger",
+      "hint": "这是从1加到20的连续自然数求和。试试把第一个数和最后一个数配成一对，第二个数和倒数第二个数配成一对……看看每一对的和是不是都相同？"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "happy",
+      "text": "算出来了，一共是二百一十件。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "surprised",
+      "text": "什么？这么快？你怎么算的？我算了半个时辰都没算完！"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "happy",
+      "text": "我没有一个一个加。我把第一个数和最后一个数配成一对，一加二十等于二十一；第二个和倒数第二个配，二加十九也等于二十一。"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "这样一对一对地配，一共能配出十对，每对都是二十一。十乘二十一，就是二百一十。"
+    },
+    {
+      "type": "handbook",
+      "title": "等差数列求和",
+      "content": "当一串数字每次增加的量相同时（比如1,2,3,...,20），可以用「首尾配对法」快速求和：\n\n总和 =（首项 + 末项）× 项数 ÷ 2\n\n例：1+2+...+20 =（1+20）×20÷2 = 210\n\n原理：把数列首尾配对，每对的和都相等，算出有多少对，再乘以每对的和即可。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "surprised",
+      "text": "首尾配对……原来还可以这样算！我活了这么大，从来没想过加法还能这么做。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "等等，我铺子里还有一个货架，上面的罐头也是按规律摆的。你要是能把那个也算出来，我就真服了你了。"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "您说说看。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "货架有九层。最上层四个罐头，往下每层都比上一层多三个，最底层二十八个。你算算，整个货架一共有多少个罐头？"
+    },
+    {
+      "type": "narration",
+      "text": "布特纳先生领着小高斯走到货架前。九层木架上，罐头整齐地码放着，从最上层的寥寥几个，到最底层的满满一排，形成一道斜斜的线。"
+    },
+    {
+      "type": "puzzle",
+      "puzzleId": "shelf",
+      "scene": "scene_shelf",
+      "hint": "货架上的罐头数排成了一列有规律的数：4, 7, 10, ..., 28，每两个相邻数的差都是3。试试用和刚才一样的首尾配对法，把第一个数和最后一个数配成一对？"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "happy",
+      "text": "一百四十四个。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "surprised",
+      "text": "又对了！你用的还是刚才那个办法？"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "对。最上层四个，最底层二十八个，配成一对是三十二。九层能配出四对半，也就是四点五对。三十二乘四点五，等于一百四十四。"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "其实不管有多少项，只要每两项之间的差是一样的，都能用这个办法。首项加末项，乘以项数，再除以二。"
+    },
+    {
+      "type": "handbook",
+      "title": "高斯速算的故事",
+      "content": "约翰·卡尔·弗里德里希·高斯（1777-1855），德国著名数学家，被誉为「数学王子」。\n\n传说高斯十岁时，老师布特纳在课堂上出了一道题：计算1+2+3+...+100。当其他同学还在埋头苦算时，高斯几秒钟就给出了答案5050。\n\n他的方法正是首尾配对法：1+100=101，2+99=101……共50对，50×101=5050。\n\n这个故事后来成为数学史上最著名的轶事之一，而首尾配对法也成为等差数列求和的经典思路。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "surprised",
+      "text": "了不起……真是了不起。孩子，你叫什么名字？"
+    },
+    {
+      "type": "dialog",
+      "charId": "gauss",
+      "portrait": "normal",
+      "text": "我叫卡尔·弗里德里希·高斯。"
+    },
+    {
+      "type": "dialog",
+      "charId": "buttner",
+      "portrait": "normal",
+      "text": "高斯……我记住这个名字了。我有一种预感，将来你一定会做出了不起的事情。今天的黄油，算我送你的。"
+    },
+    {
+      "type": "hide",
+      "charId": "gauss"
+    },
+    {
+      "type": "hide",
+      "charId": "buttner"
+    },
+    {
+      "type": "narration",
+      "text": "小高斯抱着黄油走出杂货铺，秋日的阳光洒在他身上。布特纳先生站在门口，望着那个瘦小的背影，若有所思。"
+    },
+    {
+      "type": "narration",
+      "text": "很多年后，这个名叫高斯的少年，真的成为了名垂青史的「数学王子」。而他十岁那年在杂货铺里展现的天赋，不过是一切的开始。"
+    },
+    {
+      "type": "win"
+    }
+  ]
+}
