@@ -5,7 +5,7 @@
 class StorageManager {
   constructor() {
     this.dbName = 'mathtown_save';
-    this.dbVersion = 2;
+    this.dbVersion = 3;
     this.db = null;
     this.memoryFallback = {};
     this.useMemory = false;
@@ -22,9 +22,10 @@ class StorageManager {
       const req = indexedDB.open(this.dbName, this.dbVersion);
       req.onupgradeneeded = (e) => {
         const db = e.target.result;
-        if (!db.objectStoreNames.contains('save')) {
-          db.createObjectStore('save', { keyPath: 'id' });
+        if (db.objectStoreNames.contains('save')) {
+          db.deleteObjectStore('save');
         }
+        db.createObjectStore('save', { keyPath: 'id' });
       };
       req.onsuccess = (e) => {
         this.db = e.target.result;

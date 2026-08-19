@@ -5,23 +5,23 @@
       "name": "小高斯",
       "color": "#3a6a8a",
       "portraits": {
-        "normal": "assets/characters/gauss_normal.png",
-        "happy": "assets/characters/gauss_happy.png"
+        "normal": "assets/characters/gauss_normal.jpg",
+        "happy": "assets/characters/gauss_happy.jpg"
       }
     },
     "buttner": {
       "name": "布特纳先生",
       "color": "#8b6914",
       "portraits": {
-        "normal": "assets/characters/buttner_normal.png",
-        "surprised": "assets/characters/buttner_surprised.png"
+        "normal": "assets/characters/buttner_normal.jpg",
+        "surprised": "assets/characters/buttner_surprised.jpg"
       }
     }
   },
   "nodes": [
     {
       "type": "bg",
-      "src": "assets/images/bg_shop_front.png"
+      "src": "assets/images/bg_shop_front.jpg"
     },
     {
       "type": "bgm",

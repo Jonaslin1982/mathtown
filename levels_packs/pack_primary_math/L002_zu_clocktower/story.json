@@ -4,21 +4,21 @@
       "name": "钟伯",
       "color": "#8b6914",
       "portraits": {
-        "normal": "assets/characters/zhongbo_normal.png",
-        "happy": "assets/characters/zhongbo_happy.png"
+        "normal": "assets/characters/zhongbo_normal.jpg",
+        "happy": "assets/characters/zhongbo_happy.jpg"
       }
     },
     "xiaohe": {
       "name": "小禾",
       "color": "#3a6a8a",
       "portraits": {
-        "normal": "assets/characters/xiaohe_normal.png",
-        "curious": "assets/characters/xiaohe_curious.png"
+        "normal": "assets/characters/xiaohe_normal.jpg",
+        "curious": "assets/characters/xiaohe_curious.jpg"
       }
     }
   },
   "script": [
-    { "type": "bg", "src": "assets/images/bg_tower_base.png" },
+    { "type": "bg", "src": "assets/images/bg_tower_base.jpg" },
     { "type": "bgm", "src": "assets/audio/bgm_tower.mp3" },
     { "type": "narration", "text": "麦斯镇中心的古钟楼，已经停摆整整三天了。没有了清晨的钟声，镇上的人们起床晚了，集市开得迟了，连私塾里的读书声都慢了半拍。" },
     { "type": "narration", "text": "钟楼底层的石砌大厅里，火把噼啪作响。巨大的木质齿轮机关沉默地立在中央，墙上的钟面指针凝固在一个陌生的时刻。" },
@@ -69,7 +69,7 @@
     { "type": "handbook", "title": "祖冲之与圆周率", "content": "祖冲之（公元429-500年），南北朝时期杰出的数学家、天文学家。他在刘徽「割圆术」的基础上，将圆周率精确到小数点后第七位（3.1415926~3.1415927），领先世界近千年。圆的周长公式：周长 = 直径 × π。他还编制《大明历》、制造指南车和千里船，其子祖暅之也是数学家，父子合著《缀术》。" },
     { "type": "hide", "character": "xiaohe" },
     { "type": "hide", "character": "zhongbo" },
-    { "type": "bg", "src": "assets/images/bg_pendulum.png" },
+    { "type": "bg", "src": "assets/images/bg_pendulum.jpg" },
     { "type": "narration", "text": "钟楼深处的密室门缓缓打开。石台上，一枚泛着金光的计时徽章静静躺着，齿轮和钟摆的纹样在徽章上交错，边缘环绕着3.1415926的数字。" },
     { "type": "narration", "text": "小禾小心翼翼地拿起徽章。钟伯站在他身后，火光映在老人温和的眼睛里。" },
     { "type": "narration", "text": "「记住今天，小禾。」钟伯轻声说，「数学不是书本上冰冷的数字，它是活的——它在齿轮里，在钟面上，在每一个圆的周长里。」" },

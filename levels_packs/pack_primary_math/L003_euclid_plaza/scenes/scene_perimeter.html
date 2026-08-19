@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:Georgia,"Songti SC",serif;background:linear-gradient(135deg,#2a2a3e,#3a3a52);
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .card{background:#f5e6c8;border:3px solid #c9a96e;border-radius:10px;padding:36px 40px;max-width:580px;width:100%;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);}
+  .title{text-align:center;font-size:22px;color:#6b4e1e;margin-bottom:20px;font-weight:bold;}
+  .problem{background:rgba(201,169,110,.12);border-left:4px solid #c9a96e;padding:16px 20px;margin-bottom:20px;
+    line-height:1.9;color:#4a3a1a;font-size:15px;}
+  .problem b{color:#8b6914;}
+  .shape-desc{text-align:center;margin:16px 0;color:#6b4e1e;font-size:14px;line-height:1.8;}
+  .input-row{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:16px;}
+  input{padding:10px 14px;font-size:18px;border:2px solid #c9a96e;border-radius:6px;text-align:center;width:140px;
+    background:#fdf6e3;color:#4a3a1a;}
+  button{padding:10px 28px;font-size:16px;background:linear-gradient(135deg,#8b6914,#a67c00);
+    color:#fdf6e3;border:none;border-radius:6px;cursor:pointer;font-weight:bold;}
+  button:hover{filter:brightness(1.1);}
+  .feedback{text-align:center;margin-top:16px;min-height:24px;font-size:15px;font-weight:bold;}
+  .ok{color:#2a7a2a;}
+  .err{color:#a63a3a;}
+</style></head><body>
+  <div class="card">
+    <div class="title">第二层封印 · 凹凸形围栏周长</div>
+    <div class="problem">
+      花坛的围栏是一个<b>凹字形</b>的图形：<br><br>
+      外轮廓是一个<b>长 12 厘米、宽 8 厘米</b>的长方形。<br>
+      在长方形<b>上边的正中间</b>，凹进去了一个长方形缺口：<br>
+      缺口<b>宽 4 厘米，深 3 厘米</b>。<br><br>
+      请问这个凹字形围栏的<b>总周长</b>是多少厘米？
+    </div>
+    <div class="shape-desc">（注意：凹进去的地方会多出两条竖直的边）</div>
+    <div class="input-row">
+      <input type="number" id="answer" placeholder="输入答案" step="any">
+      <button id="submit">提交</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+<script>
+  const CORRECT = 46;
+  const input = document.getElementById('answer');
+  const fb = document.getElementById('feedback');
+  function check(){
+    const val = parseFloat(input.value);
+    if(isNaN(val)){ fb.textContent='请输入一个数字'; fb.className='feedback err'; return; }
+    if(Math.abs(val - CORRECT) < 0.01){
+      fb.textContent='正确！第二层封印解除。'; fb.className='feedback ok';
+      setTimeout(()=>parent.postMessage({protocol:'mathtown-puzzle',action:'complete',puzzleId:'perimeter'},'*'),800);
+    } else {
+      fb.textContent='不对哦。试试把凹进去的横边平移上去，看看变成了什么？'; fb.className='feedback err';
+    }
+  }
+  document.getElementById('submit').onclick = check;
+  input.addEventListener('keydown', e => { if(e.key==='Enter') check(); });
+</script>
+</body></html>

@@ -1,0 +1,20 @@
+{
+  "level_id": "euclid_plaza",
+  "level_name": "石板广场的几何封印",
+  "description": "中心广场纪念碑下封着两千多年前的石盒。用分割法算面积、平移法算周长、等积变换解阴影，解开三层封印取得几何徽章。",
+  "mathematician": "欧几里得",
+  "difficulty": 3,
+  "estimated_time": 12,
+  "thumbnail": "assets/images/thumbnail.jpg",
+  "default_background": "assets/images/bg_plaza.jpg",
+  "default_bgm": "assets/audio/bgm_plaza.mp3",
+  "unlock_condition": {
+    "type": "complete_level",
+    "level": "com.mathtown.primary_math:zu_clocktower"
+  },
+  "badge": {
+    "name": "几何徽章",
+    "image": "assets/badges/badge_geometry.png",
+    "description": "掌握分割、平移与等积变换的证明，以直尺圆规和几何图形为形。"
+  }
+}
