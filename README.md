@@ -147,6 +147,10 @@ parent.postMessage({
 - **飞书应用**：使用 `lark-cli apps +html-publish` 发布为飞书应用
 - **任意 Nginx / Apache**：将目录放入网站根目录
 
+## 📖 开发文档
+
+- [关卡开发规约](docs/level-development-guide.md) — 关卡包结构、剧情脚本格式、解题场景开发、素材规范、开发流程、完成检查清单、常见问题排查
+
 ## 📄 开源协议
 
 MIT License — 可自由使用、修改、分发。
