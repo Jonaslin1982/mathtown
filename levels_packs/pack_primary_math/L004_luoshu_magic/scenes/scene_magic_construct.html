@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:Georgia,"Songti SC",serif;background:linear-gradient(135deg,#1a1a2e,#2d1b3d);
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .card{background:rgba(245,230,200,.95);border:3px solid #c9a96e;border-radius:12px;padding:24px 28px;max-width:580px;width:100%;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);}
+  .title{text-align:center;font-size:20px;color:#6b4e1e;margin-bottom:6px;font-weight:bold;}
+  .subtitle{text-align:center;font-size:13px;color:#8b6914;margin-bottom:14px;line-height:1.6;}
+  .info-row{display:flex;gap:16px;justify-content:center;margin:10px 0;font-size:14px;color:#4a3a1a;flex-wrap:wrap;}
+  .info-row b{color:#8b6914;}
+  .step1{text-align:center;margin:14px 0;}
+  .step1 label{font-size:15px;color:#4a3a1a;margin-right:8px;}
+  .step1 input{padding:8px 12px;font-size:18px;border:2px solid #c9a96e;border-radius:5px;text-align:center;
+    width:80px;background:#fdf6e3;color:#4a3a1a;}
+  .step1 button{padding:8px 20px;font-size:14px;background:linear-gradient(135deg,#2a5a6a,#3a7a8a);
+    color:#fdf6e3;border:none;border-radius:5px;cursor:pointer;font-weight:bold;margin-left:8px;}
+  .grid-wrap{display:flex;justify-content:center;margin:12px 0;}
+  .grid{display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(3,60px);gap:3px;
+    border:3px solid #8b6914;border-radius:8px;padding:4px;background:rgba(139,105,20,.1);}
+  .cell input{width:100%;height:100%;border:1px solid #c9a96e;border-radius:3px;text-align:center;
+    font-size:20px;font-weight:bold;background:#fdf6e3;color:#4a3a1a;outline:none;}
+  .cell input:focus{border-color:#8b6914;background:#fff;}
+  .submit-row{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:10px;}
+  .submit-row button{padding:10px 28px;font-size:16px;background:linear-gradient(135deg,#8b6914,#a67c00);
+    color:#fdf6e3;border:none;border-radius:6px;cursor:pointer;font-weight:bold;}
+  .feedback{text-align:center;margin-top:12px;min-height:22px;font-size:14px;font-weight:bold;}
+  .ok{color:#2a7a2a;}
+  .err{color:#a63a3a;}
+  .hidden{display:none;}
+  .nums{text-align:center;font-size:13px;color:#6b4e1e;margin:8px 0;}
+</style></head><body>
+  <div class="card">
+    <div class="title">第三重封印 · 变和之局</div>
+    <div class="subtitle">石板上放着1到9九个数字，但封印要求的幻和不是15，而是21。<br>数字不够大？让它们一起变一变吧。</div>
+    <div class="info-row">
+      <span>目标幻和：<b>21</b></span>
+      <span>可用数字：<b id="numRange">1, 2, 3, 4, 5, 6, 7, 8, 9</b></span>
+    </div>
+    <div class="step1" id="step1">
+      <label>每个数字增加</label>
+      <input type="number" id="addVal" min="0" max="10">
+      <button onclick="checkAdd()">确认变换</button>
+    </div>
+    <div class="nums hidden" id="nums2">数字已变为：3, 4, 5, 6, 7, 8, 9, 10, 11</div>
+    <div class="grid-wrap hidden" id="gridWrap">
+      <div class="grid" id="grid">
+        <div class="cell"><input type="number" data-r="0" data-c="0"></div>
+        <div class="cell"><input type="number" data-r="0" data-c="1"></div>
+        <div class="cell"><input type="number" data-r="0" data-c="2"></div>
+        <div class="cell"><input type="number" data-r="1" data-c="0"></div>
+        <div class="cell"><input type="number" data-r="1" data-c="1"></div>
+        <div class="cell"><input type="number" data-r="1" data-c="2"></div>
+        <div class="cell"><input type="number" data-r="2" data-c="0"></div>
+        <div class="cell"><input type="number" data-r="2" data-c="1"></div>
+        <div class="cell"><input type="number" data-r="2" data-c="2"></div>
+      </div>
+    </div>
+    <div class="submit-row hidden" id="submitRow">
+      <button id="submit">验证幻方</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+<script>
+  const fb = document.getElementById('feedback');
+  let stage = 1;
+
+  function checkAdd(){
+    const v = parseInt(document.getElementById('addVal').value);
+    if(isNaN(v)){ fb.textContent='请输入一个数字'; fb.className='feedback err'; return; }
+    if(v !== 2){
+      fb.textContent='不对。想想：幻和21意味着三行总和是63，而1到9的总和是45，差了多少？平均到9个数字上，每个该加几？';
+      fb.className='feedback err'; return;
+    }
+    fb.textContent='没错！每个数字增加2，幻和就从15变成了21。现在把新数字填入九宫格吧。';
+    fb.className='feedback ok';
+    stage = 2;
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('nums2').classList.remove('hidden');
+    document.getElementById('gridWrap').classList.remove('hidden');
+    document.getElementById('submitRow').classList.remove('hidden');
+  }
+
+  function checkSquare(){
+    const inputs = document.querySelectorAll('#grid input');
+    const vals = [];
+    for(let i=0;i<9;i++){
+      const v = parseInt(inputs[i].value);
+      if(isNaN(v)){ fb.textContent='请把九个格子都填满'; fb.className='feedback err'; return; }
+      vals.push(v);
+    }
+    // 检查是否用了3-11各一次
+    const sorted = [...vals].sort((a,b)=>a-b);
+    const expected = [3,4,5,6,7,8,9,10,11];
+    if(JSON.stringify(sorted)!==JSON.stringify(expected)){
+      fb.textContent='数字不对。应该恰好使用3到11各一次，不能重复也不能遗漏。';
+      fb.className='feedback err'; return;
+    }
+    // 检查每行每列对角线和为21
+    const g = [vals.slice(0,3),vals.slice(3,6),vals.slice(6,9)];
+    for(let r=0;r<3;r++){
+      if(g[r][0]+g[r][1]+g[r][2]!==21){ fb.textContent='第'+(r+1)+'行的和不是21。'; fb.className='feedback err'; return; }
+    }
+    for(let c=0;c<3;c++){
+      if(g[0][c]+g[1][c]+g[2][c]!==21){ fb.textContent='第'+(c+1)+'列的和不是21。'; fb.className='feedback err'; return; }
+    }
+    if(g[0][0]+g[1][1]+g[2][2]!==21){ fb.textContent='主对角线的和不是21。'; fb.className='feedback err'; return; }
+    if(g[0][2]+g[1][1]+g[2][0]!==21){ fb.textContent='副对角线的和不是21。'; fb.className='feedback err'; return; }
+    fb.textContent='完美！三重封印尽数破解！'; fb.className='feedback ok';
+    setTimeout(()=>parent.postMessage({protocol:'mathtown-puzzle',action:'complete',puzzleId:'magic_construct'},'*'),1000);
+  }
+
+  document.getElementById('submit').onclick = checkSquare;
+</script>
+</body></html>

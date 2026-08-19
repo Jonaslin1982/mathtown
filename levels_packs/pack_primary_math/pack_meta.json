@@ -8,6 +8,7 @@
   "levels": [
     { "level_id": "gauss_grocery", "folder": "L001_gauss_grocery" },
     { "level_id": "zu_clocktower", "folder": "L002_zu_clocktower" },
-    { "level_id": "euclid_plaza", "folder": "L003_euclid_plaza" }
+    { "level_id": "euclid_plaza", "folder": "L003_euclid_plaza" },
+    { "level_id": "luoshu_magic", "folder": "L004_luoshu_magic" }
   ]
 }

@@ -1,0 +1,95 @@
+{
+  "characters": {
+    "old_boatman": {
+      "name": "老河工",
+      "color": "#8b5a2b",
+      "portraits": {
+        "normal": "assets/characters/old_boatman.jpg"
+      }
+    },
+    "yanghui": {
+      "name": "算学博士杨辉",
+      "color": "#2a5a6a",
+      "portraits": {
+        "normal": "assets/characters/yanghui.jpg"
+      }
+    }
+  },
+  "nodes": [
+    { "type": "bg", "src": "assets/images/bg_river.jpg" },
+    { "type": "bgm", "src": "assets/audio/bgm_river.mp3" },
+    { "type": "narration", "text": "洛水之畔，夕阳将河面染成一片熔金。远处山峦如黛，近处水波不兴。一位白发老人坐在岸边的礁石上，手里摩挲着一根磨得发亮的船桨。" },
+    { "type": "show", "character": "old_boatman", "position": "left", "expression": "normal" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "年轻人，看你在这河边踱来踱去，是在找人，还是在找什么东西？" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "老夫在这洛水边撑了一辈子船，见过的人多了。你眉宇间有股书卷气，不像是来游山玩水的。" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "既然来了，老夫便给你讲个故事吧。你可曾听过「河出图，洛出书」的传说？" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "那还是大禹治水的年代。黄河泛滥，洪水滔天，大禹带着百姓挖山开渠，可那洪水就像故意作对似的，怎么都治不住。" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "有一天，大禹正在洛水边发愁，忽然见水中金光一闪——一只巨大的神龟浮出了水面！" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "那龟背上的纹路，竟是一幅由黑点白点组成的图。大禹盯着看了三天三夜，终于参透了其中玄机——原来这图里藏着天地万物的数理！" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "他按照图中所示的道理来疏浚河道，洪水果然平息了。后来人们把这幅图叫做「洛书」。" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "有人说，那图其实就是个九宫格，里面藏着一组奇妙的数字……不过老头子我是不懂什么数字的。" },
+    { "type": "dialog", "speaker": "old_boatman", "text": "你要感兴趣，前面不远有个算学馆，里面有位杨辉先生，正在整理古籍。他或许能跟你说道说道这洛书的奥妙。" },
+    { "type": "hide", "character": "old_boatman" },
+    { "type": "narration", "text": "老河工指了指河湾深处。暮色中，一座青瓦白墙的小院若隐若现，窗纸上映着摇曳的烛光。" },
+
+    { "type": "bg", "src": "assets/images/bg_study.jpg" },
+    { "type": "bgm", "src": "assets/audio/bgm_study.mp3" },
+    { "type": "narration", "text": "算学馆内，竹简堆满了书架，墙上挂着几幅河图洛书的图解。一位清瘦儒雅的中年书生正伏案整理着什么，听见脚步声，抬起头来。" },
+    { "type": "show", "character": "yanghui", "position": "right", "expression": "normal" },
+    { "type": "dialog", "speaker": "yanghui", "text": "哦？你也是为了洛书而来？在下杨辉，在此整理古籍，恰好也正研究这洛书中的奥秘。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "天下人都说洛书是神物，其实它不过是一组数字的巧妙排列罢了。你看——" },
+    { "type": "handbook", "title": "三阶幻方与洛书", "content": "将1到9这九个数字填入三行三列的方格中，使每行、每列以及两条对角线上的三个数字之和都相等。这个相等的和叫做「幻和」。洛书正是世界上最早的三阶幻方记录，其幻和为15。中国古代数学家杨辉在《续古摘奇算法》中对幻方有系统研究。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "这九宫格表面看着简单，里面藏的玄机可不少。我研究了多年，发现它层层嵌套，简直像是三道锁环环相扣。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "第一重，考的是眼力与心算——给你一个残缺的幻方，你能不能把缺的数补上？" },
+    { "type": "dialog", "speaker": "yanghui", "text": "第二重，考的是变化与观察——同一个幻方，旋转翻转之后，数字的位置全变了，你还能认出来吗？" },
+    { "type": "dialog", "speaker": "yanghui", "text": "第三重，考的是变通与创造——如果幻和变了，手头的数字不够用，你该怎么办？" },
+    { "type": "dialog", "speaker": "yanghui", "text": "若你有兴趣，不妨与我一同破解这三重封印。请随我来。" },
+    { "type": "hide", "character": "yanghui" },
+
+    { "type": "bg", "src": "assets/images/bg_seal1.jpg" },
+    { "type": "bgm", "src": "assets/audio/bgm_seal.mp3" },
+    { "type": "narration", "text": "杨辉带着你穿过一道暗门，来到一间石室。石台上，一个半透明的九宫格正悬浮在空中，数字闪着微微金光，周围符文缓缓流转。" },
+    { "type": "show", "character": "yanghui", "position": "right", "expression": "normal" },
+    { "type": "dialog", "speaker": "yanghui", "text": "这便是第一重封印——缺数之阵。你看，这个九宫格里缺了几个数。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "已知它的幻和是15，也就是说，每一行、每一列、每条对角线上的三个数加起来都等于15。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你能把空缺之处补全吗？记住，不要急着猜，先找一行或一列已经完整的，验证一下幻和，再推算缺的数。" },
+    { "type": "hide", "character": "yanghui" },
+    { "type": "puzzle", "id": "magic_fill", "scene": "scene_magic_fill", "hint": "幻和是15。找一行或一列已经有两个数的，用15减去这两个数，就得到第三个数。比如第一行已经有1和6，那么缺的数就是15-1-6。再看看第三行，已经有4和9，缺的数就是15-4-9。填完后记得验证每一行每一列和对角线是否都等于15。" },
+    { "type": "show", "character": "yanghui", "position": "right", "expression": "normal" },
+    { "type": "dialog", "speaker": "yanghui", "text": "妙！你已将洛书最基本的模样复原了。这便是洛书的本来面目——八、一、六在上，三、五、七在中，四、九、二在下。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你看，五居中央，四个角上是偶数，四条边中间是奇数。奇偶相间，阴阳调和，古人说这是天地之数的安排，并非没有道理。" },
+
+    { "type": "bg", "src": "assets/images/bg_seal2.jpg" },
+    { "type": "narration", "text": "话音未落，石台上的九宫格忽然旋转起来，化作一个星盘。数字如星辰般在盘上移动，编钟般的清脆声响在石室中回荡。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "不错，你已见到了洛书最基本的模样。但古籍有云：「洛书之妙，万变不离其宗。」" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你可知道，同一个幻方，经过旋转和翻转，能变出八种不同的面貌？就像一个立方体，你从不同角度看，看到的面各不相同，但它还是那个立方体。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "现在你面前的星盘上，显示的就是你刚才复原的那个幻方——只不过我把它旋转了一下，又藏了一个数。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你可以试着旋转或翻转这个星盘，观察数字位置的变化，然后找出那个被藏起来的数。" },
+    { "type": "hide", "character": "yanghui" },
+    { "type": "puzzle", "id": "magic_rotate", "scene": "scene_magic_rotate", "hint": "先在草稿纸上画出你刚才复原的洛书原图（8 1 6 / 3 5 7 / 4 9 2）。然后把它顺时针旋转90度，看看每个数字跑到了什么位置。对比星盘上的数字，你就能知道缺的是哪个。旋转90度的方法：把第一列倒过来变成第一行。你也可以直接用星盘上的旋转/翻转按钮操作，观察变化。" },
+    { "type": "show", "character": "yanghui", "position": "right", "expression": "normal" },
+    { "type": "dialog", "speaker": "yanghui", "text": "善哉！你已经看穿了幻方的变化之理。旋转不改变幻和，翻转也不改变——变的只是数字的位置，不变的是其中的数理关系。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "一个三阶幻方，旋转四次、翻转一次再旋转四次，共得八种形态。这便是「万变不离其宗」的道理。" },
+
+    { "type": "bg", "src": "assets/images/bg_seal3.jpg" },
+    { "type": "narration", "text": "星盘沉入地下，石室深处传来隆隆声响。一道石门缓缓开启，露出一间更加宏大的殿堂。中央地面上刻着一个巨大的石质九宫格，四周青铜管道中流水潺潺。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "这便是最后一重封印——变和之局。你已掌握了幻方的基本变化，但这最后一重，才是真正的考验。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你看，这石板上已经放好了九个数字——1到9。但封印给出的幻和，不是15，而是21。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "1到9怎么排列，都不可能让每行每列的和变成21。可封印不会出错……那么问题出在哪里呢？" },
+    { "type": "dialog", "speaker": "yanghui", "text": "算术之道，在于灵活变通。如果手头的数字不够大，我们能不能……让它们一起变一变？" },
+    { "type": "dialog", "speaker": "yanghui", "text": "想一想：三行的总和是多少？九个数字的总和又是多少？如果每个数字都增加同一个数，总和会怎么变？" },
+    { "type": "hide", "character": "yanghui" },
+    { "type": "puzzle", "id": "magic_construct", "scene": "scene_magic_construct", "hint": "第一步：幻和是21，三行的总和就是21×3=63。第二步：1到9的总和是45，63-45=18，差了18。第三步：九个数字每个都增加同一个数，增加的总和就是9的倍数。18÷9=2，所以每个数字都要增加2。第四步：增加后数字变成3到11，把洛书原图每个数加2，填入九宫格即可。" },
+    { "type": "show", "character": "yanghui", "position": "right", "expression": "normal" },
+    { "type": "handbook", "title": "幻方的构造之法", "content": "任意三阶幻方，都可以从洛书（1-9，幻和为15）出发，对每个数字同时加上同一个数，得到新的幻方。这就是「等量加减法」。原理：每行每列的三个数同时增加相同的量，幻和也增加这个量的三倍。利用这个方法，可以构造出幻和为任意大于等于15的3的倍数的三阶幻方。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "妙哉！妙哉！" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你以加减为基，以变换为用，以变通为魂，三重封印尽数破解！这，就是洛书的真面目。" },
+    { "type": "narration", "text": "话音刚落，巨大的石质九宫格亮起耀眼的金光。数字从石缝中升腾而起，在空中排列成一幅完整的洛书图，龟甲般的纹路在光芒中若隐若现。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你可知，今日这三重关，其实对应了算术的三重境界：第一重，见数算数，是「术」；第二重，见数知变，是「法」；第三重，见数悟道，是「理」。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "你能走到这一步，足见根基扎实、心思灵巧。这枚「河洛灵龟」徽章，便赠予你了。" },
+    { "type": "dialog", "speaker": "yanghui", "text": "愿你日后无论遇到何等难题，都能记得今日的体会——数虽有尽，理却无穷。万变不离其宗，变通方得始终。" },
+    { "type": "hide", "character": "yanghui" },
+    { "type": "narration", "text": "金光渐渐散去，石室恢复了宁静。你握紧了手中的徽章，龟背上的九宫格纹路在掌心微微发热。洛水的传说，从此不再只是传说。" },
+    { "type": "win" }
+  ]
+}

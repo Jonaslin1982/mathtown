@@ -1,0 +1,20 @@
+{
+  "level_id": "luoshu_magic",
+  "level_name": "洛书奇缘·幻方封印",
+  "description": "河洛之畔，神龟负图而出。宋代算学大师杨辉带你破解三阶幻方的三重封印，领略洛书千古不传之秘。",
+  "mathematician": "杨辉",
+  "difficulty": 3,
+  "estimated_time": 15,
+  "thumbnail": "assets/images/thumbnail.jpg",
+  "default_background": "assets/images/bg_river.jpg",
+  "default_bgm": "assets/audio/bgm_river.mp3",
+  "unlock_condition": {
+    "type": "complete_level",
+    "level": "com.mathtown.primary_math:euclid_plaza"
+  },
+  "badge": {
+    "name": "河洛灵龟徽章",
+    "image": "assets/badges/badge_luoshu.png",
+    "description": "龟背纹路化作九宫格，数字流转其间，掌握幻方构造之法的证明。"
+  }
+}
