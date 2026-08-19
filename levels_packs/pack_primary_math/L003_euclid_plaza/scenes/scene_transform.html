@@ -4,13 +4,19 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:Georgia,"Songti SC",serif;background:linear-gradient(135deg,#2a2a3e,#3a3a52);
     min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-  .card{background:#f5e6c8;border:3px solid #c9a96e;border-radius:10px;padding:36px 40px;max-width:600px;width:100%;
+  .card{background:#f5e6c8;border:3px solid #c9a96e;border-radius:10px;padding:32px 36px;max-width:620px;width:100%;
     box-shadow:0 8px 30px rgba(0,0,0,.4);}
-  .title{text-align:center;font-size:22px;color:#6b4e1e;margin-bottom:20px;font-weight:bold;}
-  .problem{background:rgba(201,169,110,.12);border-left:4px solid #c9a96e;padding:16px 20px;margin-bottom:20px;
+  .title{text-align:center;font-size:22px;color:#6b4e1e;margin-bottom:18px;font-weight:bold;}
+  .problem{background:rgba(201,169,110,.12);border-left:4px solid #c9a96e;padding:16px 20px;margin-bottom:18px;
     line-height:1.9;color:#4a3a1a;font-size:15px;}
   .problem b{color:#8b6914;}
-  .shape-desc{text-align:center;margin:16px 0;color:#6b4e1e;font-size:14px;line-height:1.8;}
+  .diagram{display:flex;justify-content:center;margin:14px 0;}
+  .square{width:160px;height:160px;border:3px solid #6b4e1e;position:relative;background:rgba(255,255,255,.3);}
+  .p-dot{position:absolute;left:55%;top:40%;width:10px;height:10px;background:#a63a3a;border-radius:50%;transform:translate(-50%,-50%);}
+  .line{position:absolute;background:#6b4e1e;transform-origin:left center;}
+  .lbl{position:absolute;font-size:12px;font-weight:bold;color:#4a3a1a;}
+  .lbl-top{top:-18px;left:50%;transform:translateX(-50%);}
+  .lbl-right{right:-28px;top:50%;transform:translateY(-50%);}
   .input-row{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:16px;}
   input{padding:10px 14px;font-size:18px;border:2px solid #c9a96e;border-radius:6px;text-align:center;width:140px;
     background:#fdf6e3;color:#4a3a1a;}
@@ -24,12 +30,18 @@
   <div class="card">
     <div class="title">第三层封印 · 等积变换</div>
     <div class="problem">
-      石盒顶盖内侧刻着一个长方形，长<b>10 厘米</b>，宽<b>6 厘米</b>。<br><br>
-      长方形内部有一个点 P，从 P 向四个顶点各连一条线段，把长方形分成了<b>四个三角形</b>。<br><br>
-      已知其中三个三角形的面积分别是：<b>12 平方厘米</b>、<b>8 平方厘米</b>、<b>22 平方厘米</b>。<br><br>
-      请问第四个三角形的面积是多少平方厘米？
+      石盒顶盖内侧刻着一个正方形，面积为<b>72 平方厘米</b>。<br><br>
+      正方形内部有一个点 P，从 P 向四个顶点各连一条线段，把正方形分成了<b>四个三角形</b>（分别以上、下、左、右四条边为底）。<br><br>
+      已知：<br>
+      以上边为底的三角形面积，比以下边为底的三角形面积<b>大 6 平方厘米</b>；<br>
+      以右边为底的三角形面积是<b>15 平方厘米</b>。<br><br>
+      请问以左边为底的三角形面积是多少平方厘米？
     </div>
-    <div class="shape-desc">（提示：不需要知道点 P 在哪里，也不需要测量任何长度）</div>
+    <div class="diagram">
+      <div class="square">
+        <div class="p-dot"></div>
+      </div>
+    </div>
     <div class="input-row">
       <input type="number" id="answer" placeholder="输入答案" step="any">
       <button id="submit">提交</button>
@@ -37,7 +49,7 @@
     <div class="feedback" id="feedback"></div>
   </div>
 <script>
-  const CORRECT = 18;
+  const CORRECT = 21;
   const input = document.getElementById('answer');
   const fb = document.getElementById('feedback');
   function check(){
@@ -47,7 +59,7 @@
       fb.textContent='正确！三层封印全部解除，石盒即将打开。'; fb.className='feedback ok';
       setTimeout(()=>parent.postMessage({protocol:'mathtown-puzzle',action:'complete',puzzleId:'transform'},'*'),1000);
     } else {
-      fb.textContent='不对哦。想想相对的两个三角形面积之间有什么关系？'; fb.className='feedback err';
+      fb.textContent='不对哦。先想想：相对的两个三角形面积之和等于什么？再利用和差关系求出上下两个三角形各自的面积。'; fb.className='feedback err';
     }
   }
   document.getElementById('submit').onclick = check;

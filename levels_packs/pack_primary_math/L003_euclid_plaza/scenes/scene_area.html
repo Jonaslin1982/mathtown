@@ -4,13 +4,19 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:Georgia,"Songti SC",serif;background:linear-gradient(135deg,#2a2a3e,#3a3a52);
     min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-  .card{background:#f5e6c8;border:3px solid #c9a96e;border-radius:10px;padding:36px 40px;max-width:580px;width:100%;
+  .card{background:#f5e6c8;border:3px solid #c9a96e;border-radius:10px;padding:32px 36px;max-width:600px;width:100%;
     box-shadow:0 8px 30px rgba(0,0,0,.4);}
-  .title{text-align:center;font-size:22px;color:#6b4e1e;margin-bottom:20px;font-weight:bold;}
-  .problem{background:rgba(201,169,110,.12);border-left:4px solid #c9a96e;padding:16px 20px;margin-bottom:20px;
+  .title{text-align:center;font-size:22px;color:#6b4e1e;margin-bottom:18px;font-weight:bold;}
+  .problem{background:rgba(201,169,110,.12);border-left:4px solid #c9a96e;padding:16px 20px;margin-bottom:18px;
     line-height:1.9;color:#4a3a1a;font-size:15px;}
   .problem b{color:#8b6914;}
-  .shape-desc{text-align:center;margin:16px 0;color:#6b4e1e;font-size:14px;line-height:1.8;}
+  .grid-diagram{display:flex;justify-content:center;margin:14px 0;}
+  .grid{display:grid;grid-template-columns:120px 100px;grid-template-rows:70px 90px;gap:2px;border:2px solid #6b4e1e;}
+  .cell{display:flex;align-items:center;justify-content:center;font-weight:bold;color:#4a3a1a;font-size:16px;}
+  .cell-1{background:#e8d5a8;}
+  .cell-2{background:#d4c090;}
+  .cell-3{background:#d4c090;}
+  .cell-4{background:#c9a96e;color:#fdf6e3;font-size:22px;}
   .input-row{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:16px;}
   input{padding:10px 14px;font-size:18px;border:2px solid #c9a96e;border-radius:6px;text-align:center;width:140px;
     background:#fdf6e3;color:#4a3a1a;}
@@ -22,15 +28,23 @@
   .err{color:#a63a3a;}
 </style></head><body>
   <div class="card">
-    <div class="title">第一层封印 · 阶梯形花坛面积</div>
+    <div class="title">第一层封印 · 四格花圃面积</div>
     <div class="problem">
-      广场上要修建一个<b>三级阶梯形</b>花坛，从下往上每一级都是长方形：<br><br>
-      最下面一级：<b>长 10 米，宽 2 米</b><br>
-      中间一级：<b>长 8 米，宽 2 米</b>（居中叠在下面一级上方）<br>
-      最上面一级：<b>长 6 米，宽 2 米</b>（居中叠在中间一级上方）<br><br>
-      请问这个花坛的<b>占地面积</b>是多少平方米？
+      一块长方形花圃被一条横向小径和一条纵向小径（宽度忽略不计）分成了<b>四个小长方形</b>。<br><br>
+      已知其中三块的面积：<br>
+      左上角：<b>18 平方米</b><br>
+      右上角：<b>12 平方米</b><br>
+      左下角：<b>24 平方米</b><br><br>
+      请问右下角那块的面积是多少平方米？
     </div>
-    <div class="shape-desc">（提示：三级台阶的宽度都是 2 米，长度依次递减 2 米）</div>
+    <div class="grid-diagram">
+      <div class="grid">
+        <div class="cell cell-1">18</div>
+        <div class="cell cell-2">12</div>
+        <div class="cell cell-3">24</div>
+        <div class="cell cell-4">?</div>
+      </div>
+    </div>
     <div class="input-row">
       <input type="number" id="answer" placeholder="输入答案" step="any">
       <button id="submit">提交</button>
@@ -38,7 +52,7 @@
     <div class="feedback" id="feedback"></div>
   </div>
 <script>
-  const CORRECT = 48;
+  const CORRECT = 16;
   const input = document.getElementById('answer');
   const fb = document.getElementById('feedback');
   function check(){
@@ -48,7 +62,7 @@
       fb.textContent='正确！第一层封印解除。'; fb.className='feedback ok';
       setTimeout(()=>parent.postMessage({protocol:'mathtown-puzzle',action:'complete',puzzleId:'area'},'*'),800);
     } else {
-      fb.textContent='不对哦。想想能不能把阶梯形分成几个长方形？'; fb.className='feedback err';
+      fb.textContent='不对哦。想想同一列的两个长方形，它们的宽有什么关系？面积比又等于什么比？'; fb.className='feedback err';
     }
   }
   document.getElementById('submit').onclick = check;
