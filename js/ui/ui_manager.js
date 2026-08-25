@@ -312,11 +312,6 @@ class UIManager {
       resRow.appendChild(card);
     });
     wrap.appendChild(resRow);
-    // 消耗公式提示
-    const formula = document.createElement('div');
-    formula.style.cssText = 'text-align:center;font-size:12px;color:#8a7a6a;margin-bottom:14px;background:rgba(255,248,230,0.6);padding:6px;border-radius:4px;';
-    formula.innerHTML = '日耗：每兵每日 水9 / 肉0.5 / 马料8 单位 &nbsp;|&nbsp; 总耗 = 日耗 × 兵力 × 天数';
-    wrap.appendChild(formula);
     // 滑块区域
     const sliderArea = document.createElement('div');
     sliderArea.style.cssText = 'background:rgba(255,248,230,0.85);border-radius:10px;padding:16px 20px;margin-bottom:14px;';
@@ -333,7 +328,7 @@ class UIManager {
     // 天数滑块
     const dayLabel = document.createElement('div');
     dayLabel.style.cssText = 'display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;';
-    dayLabel.innerHTML = '<span>📅 行军天数（日，最短12日抵境）</span><span id="sandbox-day-val" style="font-weight:bold;color:#5a3a1a;">12</span>';
+    dayLabel.innerHTML = '<span>📅 行军天数（日）</span><span id="sandbox-day-val" style="font-weight:bold;color:#5a3a1a;">12</span>';
     sliderArea.appendChild(dayLabel);
     const daySlider = document.createElement('input');
     daySlider.type = 'range';
@@ -386,30 +381,28 @@ class UIManager {
       const water = 9 * X * Y;
       const meat = 0.5 * X * Y;
       const hay = 8 * X * Y;
-      document.getElementById('c-water').textContent = water.toLocaleString();
-      document.getElementById('c-meat').textContent = meat.toLocaleString();
-      document.getElementById('c-hay').textContent = hay.toLocaleString();
-      const status = document.getElementById('sandbox-status');
+      const wEl = document.getElementById('c-water');
+      const mEl = document.getElementById('c-meat');
+      const hEl = document.getElementById('c-hay');
+      wEl.textContent = water.toLocaleString();
+      mEl.textContent = meat.toLocaleString();
+      hEl.textContent = hay.toLocaleString();
       const over = [];
-      if (water > r.W_total) over.push('水超' + (water - r.W_total).toLocaleString());
-      if (meat > r.Me_total) over.push('肉超' + (meat - r.Me_total).toLocaleString());
-      if (hay > r.Hay_total) over.push('马料超' + (hay - r.Hay_total).toLocaleString());
+      if (water > r.W_total) { over.push('水'); wEl.style.color = '#c0392b'; } else { wEl.style.color = '#4a90d9'; }
+      if (meat > r.Me_total) { over.push('肉'); mEl.style.color = '#c0392b'; } else { mEl.style.color = '#c0392b'; }
+      if (hay > r.Hay_total) { over.push('马料'); hEl.style.color = '#c0392b'; } else { hEl.style.color = '#d4a017'; }
+      const status = document.getElementById('sandbox-status');
       if (over.length > 0) {
-        status.textContent = '⚠ 补给不足：' + over.join('，');
+        status.textContent = '⚠ 补给不足：' + over.join('、') + ' 消耗超过预埋总量';
         status.style.color = '#c0392b';
-      } else if (Y < 12) {
-        status.textContent = '⚠ 行军过急：少于12日无法横穿戈壁';
-        status.style.color = '#e67e22';
-      } else if (Y > 14) {
-        status.textContent = '⚠ 行军拖沓：超过14日将错失战机';
-        status.style.color = '#e67e22';
-      } else if (X < 1000) {
-        status.textContent = '⚠ 兵力不足一千：恐将苦战';
-        status.style.color = '#e67e22';
+        marchBtn.disabled = true;
+        marchBtn.style.opacity = '0.5';
+        marchBtn.style.cursor = 'not-allowed';
       } else {
-        const eff = (X * Y) / r.S_max;
-        status.textContent = '✓ 方案可行，资源利用率 ' + (eff * 100).toFixed(1) + '%';
-        status.style.color = '#27ae60';
+        status.textContent = '';
+        marchBtn.disabled = false;
+        marchBtn.style.opacity = '1';
+        marchBtn.style.cursor = 'pointer';
       }
     };
     troopSlider.addEventListener('input', updateCalc);
