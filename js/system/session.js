@@ -125,30 +125,38 @@ class Session {
     const water = 9 * X * Y;
     const meat = 0.5 * X * Y;
     const hay = 8 * X * Y;
-    const legal = water <= r.W_total && meat <= r.Me_total && hay <= r.Hay_total;
     const personDays = X * Y;
     const efficiency = personDays / r.S_max;
-    let outcome, detail;
-    if (!legal) {
-      outcome = 'annihilated';
-      detail = '补给耗尽，全军覆没';
-    } else if (Y < 12) {
-      outcome = 'short';
-      detail = '行军过急，无法抵境';
-    } else if (Y > 14) {
-      outcome = 'delayed';
-      detail = '行军拖沓，错失战机';
-    } else if (X < 1000) {
-      outcome = 'hard_fought';
-      detail = '兵力不足，苦战惨胜';
-    } else if (efficiency < 0.9) {
-      outcome = 'pass';
-      detail = '按时抵达，兵力保守';
-    } else {
-      outcome = 'perfect';
-      detail = '极致最优，史诗完胜';
+    // 兵力不足千人：惨败
+    if (X < 1000) {
+      return { outcome: 'annihilated', detail: '出征兵力不足千人，面对敌军主力战力悬殊，接战即溃，惨败而归。', water, meat, hay, personDays, efficiency, legal: false };
     }
-    return { outcome, detail, water, meat, hay, personDays, efficiency, legal };
+    // 补给耗尽：明确指出哪种资源不够
+    const shortages = [];
+    if (water > r.W_total) shortages.push('水源');
+    if (meat > r.Me_total) shortages.push('肉食');
+    if (hay > r.Hay_total) shortages.push('马料');
+    if (shortages.length > 0) {
+      return { outcome: 'annihilated', detail: '行军途中' + shortages.join('、') + '耗尽，大军渴饿交加，战马倒毙，全军覆没于戈壁。', water, meat, hay, personDays, efficiency, legal: false };
+    }
+    // 无法抵境
+    if (Y < 12) {
+      return { outcome: 'short', detail: '戈壁全程720里，非日行60里、满12日不可逾越。行军过急，大军困死途中。', water, meat, hay, personDays, efficiency, legal: true };
+    }
+    // 错失战机
+    if (Y > 14) {
+      return { outcome: 'delayed', detail: '行军拖沓，抵达时敌军已完成布防，战机尽失，虽胜犹憾。', water, meat, hay, personDays, efficiency, legal: true };
+    }
+    // 合格通关
+    if (efficiency < 0.9) {
+      // 兵力刚过下限但不多：苦战惨胜
+      if (X < 2000) {
+        return { outcome: 'hard_fought', detail: '兵力刚够最低门槛，将士们浴血奋战，虽胜但伤亡惨重，苦战惨胜。', water, meat, hay, personDays, efficiency, legal: true };
+      }
+      return { outcome: 'pass', detail: '按时抵达，兵力保守，资源充裕，稳稳拿下此战。', water, meat, hay, personDays, efficiency, legal: true };
+    }
+    // 完美通关
+    return { outcome: 'perfect', detail: '极致最优，兵力与补给配合天衣无缝，以最小代价拿下最大战果，史诗完胜！', water, meat, hay, personDays, efficiency, legal: true };
   }
 
   destroy() {

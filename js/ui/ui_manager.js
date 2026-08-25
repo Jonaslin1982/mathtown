@@ -322,7 +322,7 @@ class UIManager {
     sliderArea.appendChild(troopLabel);
     const troopSlider = document.createElement('input');
     troopSlider.type = 'range';
-    troopSlider.min = 100; troopSlider.max = 10000; troopSlider.step = 100; troopSlider.value = 3000;
+    troopSlider.min = 100; troopSlider.max = 10000; troopSlider.step = 100; troopSlider.value = 100;
     troopSlider.style.cssText = 'width:100%;margin-bottom:14px;accent-color:#8b4513;';
     sliderArea.appendChild(troopSlider);
     // 天数滑块
@@ -332,7 +332,7 @@ class UIManager {
     sliderArea.appendChild(dayLabel);
     const daySlider = document.createElement('input');
     daySlider.type = 'range';
-    daySlider.min = 1; daySlider.max = 30; daySlider.step = 1; daySlider.value = 12;
+    daySlider.min = 1; daySlider.max = 30; daySlider.step = 1; daySlider.value = 1;
     daySlider.style.cssText = 'width:100%;accent-color:#8b4513;';
     sliderArea.appendChild(daySlider);
     wrap.appendChild(sliderArea);
