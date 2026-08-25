@@ -336,78 +336,23 @@ class UIManager {
     daySlider.style.cssText = 'width:100%;accent-color:#8b4513;';
     sliderArea.appendChild(daySlider);
     wrap.appendChild(sliderArea);
-    // 实时消耗显示
-    const consumeArea = document.createElement('div');
-    consumeArea.style.cssText = 'background:rgba(255,248,230,0.85);border-radius:10px;padding:12px 16px;margin-bottom:14px;';
-    const consumeTitle = document.createElement('div');
-    consumeTitle.style.cssText = 'font-size:14px;font-weight:bold;margin-bottom:8px;color:#5a3a1a;';
-    consumeTitle.textContent = '📊 预计总消耗';
-    consumeArea.appendChild(consumeTitle);
-    const consumeGrid = document.createElement('div');
-    consumeGrid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;';
-    const consumeItems = [
-      { id: 'c-water', label: '水', color: '#4a90d9' },
-      { id: 'c-meat', label: '肉', color: '#c0392b' },
-      { id: 'c-hay', label: '马料', color: '#d4a017' }
-    ];
-    consumeItems.forEach(item => {
-      const cell = document.createElement('div');
-      cell.style.cssText = 'text-align:center;padding:6px;border-radius:6px;background:rgba(255,255,255,0.5);';
-      cell.innerHTML = '<div style="font-size:11px;color:#888;">' + item.label + '</div>' +
-        '<div id="' + item.id + '" style="font-size:16px;font-weight:bold;color:' + item.color + ';">0</div>';
-      consumeGrid.appendChild(cell);
-    });
-    consumeArea.appendChild(consumeGrid);
-    const statusLine = document.createElement('div');
-    statusLine.id = 'sandbox-status';
-    statusLine.style.cssText = 'text-align:center;margin-top:8px;font-size:13px;font-weight:bold;';
-    consumeArea.appendChild(statusLine);
-    wrap.appendChild(consumeArea);
-    // 出征按钮
+    // 出征按钮（不显示预计消耗，让玩家自行计算；算错则可能补给耗尽）
     const btnRow = document.createElement('div');
-    btnRow.style.cssText = 'text-align:center;';
+    btnRow.style.cssText = 'text-align:center;margin-top:24px;';
     const marchBtn = document.createElement('button');
     marchBtn.textContent = '⚔ 出征！';
     marchBtn.style.cssText = 'padding:12px 48px;font-size:18px;font-weight:bold;background:linear-gradient(135deg,#8b4513,#a0522d);color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:4px;box-shadow:0 4px 12px rgba(139,69,19,0.4);';
     btnRow.appendChild(marchBtn);
     wrap.appendChild(btnRow);
     container.appendChild(wrap);
-    // 实时计算
-    const updateCalc = () => {
-      const X = parseInt(troopSlider.value);
-      const Y = parseInt(daySlider.value);
-      document.getElementById('sandbox-troop-val').textContent = X;
-      document.getElementById('sandbox-day-val').textContent = Y;
-      const water = 9 * X * Y;
-      const meat = 0.5 * X * Y;
-      const hay = 8 * X * Y;
-      const wEl = document.getElementById('c-water');
-      const mEl = document.getElementById('c-meat');
-      const hEl = document.getElementById('c-hay');
-      wEl.textContent = water.toLocaleString();
-      mEl.textContent = meat.toLocaleString();
-      hEl.textContent = hay.toLocaleString();
-      const over = [];
-      if (water > r.W_total) { over.push('水'); wEl.style.color = '#c0392b'; } else { wEl.style.color = '#4a90d9'; }
-      if (meat > r.Me_total) { over.push('肉'); mEl.style.color = '#c0392b'; } else { mEl.style.color = '#c0392b'; }
-      if (hay > r.Hay_total) { over.push('马料'); hEl.style.color = '#c0392b'; } else { hEl.style.color = '#d4a017'; }
-      const status = document.getElementById('sandbox-status');
-      if (over.length > 0) {
-        status.textContent = '⚠ 补给不足：' + over.join('、') + ' 消耗超过预埋总量';
-        status.style.color = '#c0392b';
-        marchBtn.disabled = true;
-        marchBtn.style.opacity = '0.5';
-        marchBtn.style.cursor = 'not-allowed';
-      } else {
-        status.textContent = '';
-        marchBtn.disabled = false;
-        marchBtn.style.opacity = '1';
-        marchBtn.style.cursor = 'pointer';
-      }
+    // 仅更新滑块数值显示，不计算/显示消耗量
+    const updateDisplay = () => {
+      document.getElementById('sandbox-troop-val').textContent = troopSlider.value;
+      document.getElementById('sandbox-day-val').textContent = daySlider.value;
     };
-    troopSlider.addEventListener('input', updateCalc);
-    daySlider.addEventListener('input', updateCalc);
-    updateCalc();
+    troopSlider.addEventListener('input', updateDisplay);
+    daySlider.addEventListener('input', updateDisplay);
+    updateDisplay();
     // 出征
     marchBtn.addEventListener('click', () => {
       this.game.audio.playSFX('ui_click');
