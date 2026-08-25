@@ -1,0 +1,11 @@
+{
+  "pack_id": "com.mathtown.war_calculus",
+  "pack_name": "战算寰宇",
+  "version": "1.0.0",
+  "author": "MathTown Team",
+  "description": "战争与数学的交汇：从蒙古西征到近代战役，在真实历史决策中学习统筹规划、资源优化与极值思维。",
+  "api_version_required": 2,
+  "levels": [
+    { "level_id": "mongol_western", "folder": "L001_mongol_western" }
+  ]
+}

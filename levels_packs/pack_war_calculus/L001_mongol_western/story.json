@@ -1,0 +1,81 @@
+{
+  "characters": {
+    "genghis": {
+      "name": "成吉思汗",
+      "color": "#8b4513",
+      "portraits": {
+        "normal": "assets/characters/genghis.jpg"
+      }
+    },
+    "advisor": {
+      "name": "随军参谋",
+      "color": "#2c5f7c",
+      "portraits": {
+        "normal": "assets/characters/advisor.jpg"
+      }
+    }
+  },
+  "default_background": "assets/images/bg_steppe.jpg",
+  "default_bgm": "assets/audio/bgm_steppe.mp3",
+  "nodes": [
+    {"type": "bg", "src": "assets/images/bg_steppe.jpg"},
+    {"type": "bgm", "src": "assets/audio/bgm_steppe.mp3"},
+    {"type": "narration", "text": "公元一二二〇年，蒙古第一次西征。成吉思汗率二十万大军翻越天山，兵锋直指花剌子模帝国。然而，横亘在铁骑面前的，是号称「死亡之海」的克孜勒库姆戈壁——七百里黄沙，无水无草，飞鸟难渡。"},
+    {"type": "narration", "text": "花剌子模苏丹摩诃末断言：蒙古人不可能横穿这片戈壁。他将主力收缩至撒马尔罕城，以为高枕无忧。但成吉思汗的字典里，从来没有「不可能」三个字。"},
+    {"type": "show", "character": "genghis", "position": "left", "expression": "normal"},
+    {"type": "dialog", "speaker": "genghis", "text": "摩诃末以为戈壁是他的城墙。在我看来，戈壁不过是另一个战场。谁能算清每一滴水、每一把草料，谁就能活着走到撒马尔罕城下。"},
+    {"type": "hide", "character": "genghis"},
+    {"type": "bg", "src": "assets/images/bg_tent.jpg"},
+    {"type": "bgm", "src": "assets/audio/bgm_tent.mp3"},
+    {"type": "show", "character": "genghis", "position": "left", "expression": "normal"},
+    {"type": "show", "character": "advisor", "position": "right", "expression": "normal"},
+    {"type": "dialog", "speaker": "genghis", "text": "参谋，横穿戈壁的补给，可曾清点完毕？"},
+    {"type": "dialog", "speaker": "advisor", "text": "回大汗，已清点完毕。此次预埋的水源、肉食与马料，皆已登记造册。"},
+    {"type": "handbook", "title": "蒙古军制与十进制", "content": "蒙古军队采用十进制编制：十户（10人）、百户（100人）、千户（1000人）、万户（图曼，10000人）。千户是基本独立战术单位，万户是最大独立编制，由宗王或名将统领。第一次西征总兵力约十万至二十万，对外号称六十万。"},
+    {"type": "dialog", "speaker": "advisor", "text": "戈壁全长七百二十里，我军日均行军六十里，最短十二日可抵撒马尔罕城下。但若超过十四日，花剌子模援军必将赶到，战机尽失。"},
+    {"type": "dialog", "speaker": "advisor", "text": "每一名骑兵，每日需消耗水九单位、肉食零点五单位、马料八单位。总消耗量等于日耗乘以兵力再乘以天数。三项补给，任一项耗尽，大军便会困死戈壁。"},
+    {"type": "handbook", "title": "多变量约束优化", "content": "在多个资源约束下求最优解，是运筹学的核心问题。设兵力为X、天数为Y，三项资源上限分别为W、Me、Hay，则约束条件为：9XY≤W，0.5XY≤Me，8XY≤Hay。最大可支撑人天S_max=min(⌊W/9⌋,⌊Me/0.5⌋,⌊Hay/8⌋)。资源利用率=XY/S_max，越接近100%说明补给利用越充分。"},
+    {"type": "dialog", "speaker": "genghis", "text": "兵力不可过少。不足一千人，连一个完整的千户都凑不齐，面对坚城只能苦战。但补给有限，兵多了走不远，兵少了打不下。这中间的分寸，你来推演。"},
+    {"type": "dialog", "speaker": "advisor", "text": "大汗，沙盘已备。请调配出征兵力与行军天数，臣将实时核算补给消耗。"},
+    {"type": "hide", "character": "genghis"},
+    {"type": "hide", "character": "advisor"},
+    {"type": "sandbox", "config": {}},
+
+    {"type": "bg", "src": "assets/images/bg_gobi.jpg", "if_outcome": "annihilated"},
+    {"type": "narration", "text": "大军深入戈壁第三日，水源告罄。烈日炙烤下，战马一匹接一匹倒下，士兵的嘴唇干裂渗血。没有水，就没有生命。", "if_outcome": "annihilated"},
+    {"type": "narration", "text": "黄沙掩埋了旌旗，也掩埋了西征的梦想。摩诃末在撒马尔罕城头，等来的不是蒙古铁骑，而是戈壁中传来的噩耗。", "if_outcome": "annihilated"},
+
+    {"type": "bg", "src": "assets/images/bg_gobi.jpg", "if_outcome": "short"},
+    {"type": "narration", "text": "大军强行军，试图以最快速度穿越戈壁。然而戈壁不是草原，人马皆需休整。不足十二日的行军计划，从一开始就是一个不可能完成的任务。", "if_outcome": "short"},
+    {"type": "narration", "text": "第七日，先头部队在沙丘间迷失方向，后续大军首尾不能相顾。戈壁用它的方式告诉所有人：有些距离，不是靠意志就能缩短的。", "if_outcome": "short"},
+
+    {"type": "bg", "src": "assets/images/bg_gobi.jpg", "if_outcome": ["delayed", "hard_fought", "pass", "perfect"]},
+    {"type": "narration", "text": "大军踏入克孜勒库姆戈壁。黄沙漫天，日头毒烈。每一滴水都被反复计算，每一把草料都被精确分配。这是一场与时间、与资源、与死亡的赛跑。", "if_outcome": ["delayed", "hard_fought", "pass", "perfect"]},
+
+    {"type": "narration", "text": "第十五日，当蒙古铁骑的身影出现在撒马尔罕城下时，花剌子模守军的表情，从惊愕变为恐惧。他们以为不可能的事情，真的发生了。", "if_outcome": "delayed"},
+    {"type": "show", "character": "genghis", "position": "left", "expression": "normal", "if_outcome": "delayed"},
+    {"type": "dialog", "speaker": "genghis", "text": "虽然迟了两日，但我们还是到了。传令下去，休整半日，午后攻城。", "if_outcome": "delayed"},
+    {"type": "hide", "character": "genghis", "if_outcome": "delayed"},
+
+    {"type": "narration", "text": "兵力不足一千，却硬是横穿了七百里戈壁。当这支疲惫之师出现在城下时，花剌子模人笑了——他们以为这不过是一支斥候小队。", "if_outcome": "hard_fought"},
+    {"type": "narration", "text": "然而蒙古人的字典里没有「撤退」。不足千人的队伍，对坚城发起了悍不畏死的冲锋。血战三日，城破。但活下来的人，不到出征时的三成。", "if_outcome": "hard_fought"},
+    {"type": "show", "character": "genghis", "position": "left", "expression": "normal", "if_outcome": "hard_fought"},
+    {"type": "dialog", "speaker": "genghis", "text": "胜了，但胜得太惨。这些儿郎的血，不能白流。下一次，我们要带更多的人，更充足的补给。", "if_outcome": "hard_fought"},
+    {"type": "hide", "character": "genghis", "if_outcome": "hard_fought"},
+
+    {"type": "narration", "text": "第十二日清晨，蒙古大军如神兵天降，出现在撒马尔罕城下。花剌子模守军尚未从睡梦中醒来，城头的旗帜已经换了主人。", "if_outcome": "pass"},
+    {"type": "show", "character": "genghis", "position": "left", "expression": "normal", "if_outcome": "pass"},
+    {"type": "dialog", "speaker": "genghis", "text": "按时抵达，兵力充足。这一仗，打得稳。传令，入城！", "if_outcome": "pass"},
+    {"type": "hide", "character": "genghis", "if_outcome": "pass"},
+
+    {"type": "narration", "text": "第十二日，当第一缕晨光洒在戈壁尽头时，蒙古铁骑的洪流席卷而至。补给用到极致，时间卡到分秒，兵力恰到好处——这不是一场行军，这是一场精确到极致的数学运算。", "if_outcome": "perfect"},
+    {"type": "narration", "text": "撒马尔罕城破之日，摩诃末在逃亡路上喃喃自语：「他们是怎么穿过那片死亡之海的？」答案很简单——他们把每一滴水、每一把草料，都算到了极致。", "if_outcome": "perfect"},
+    {"type": "show", "character": "genghis", "position": "left", "expression": "normal", "if_outcome": "perfect"},
+    {"type": "dialog", "speaker": "genghis", "text": "妙！补给用到极致，时间分秒不差，兵力恰到好处。这才是我蒙古铁骑的真正威力——不是蛮力，是算计！", "if_outcome": "perfect"},
+    {"type": "hide", "character": "genghis", "if_outcome": "perfect"},
+
+    {"type": "handbook", "title": "蒙古西征的后勤智慧", "content": "蒙古军队之所以能横扫欧亚，靠的不仅是骑射之利，更是精密的后勤统筹。每一次远征前，都要精确计算兵力、天数、补给三者的关系。这种「在约束条件下求最优解」的思维，正是现代运筹学的雏形。成吉思汗的胜利，本质上是数学的胜利。", "if_outcome": ["delayed", "hard_fought", "pass", "perfect"]},
+
+    {"type": "win", "if_outcome": ["delayed", "hard_fought", "pass", "perfect"]}
+  ]
+}

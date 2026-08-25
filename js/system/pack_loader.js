@@ -9,7 +9,7 @@ class PackLoader {
 
   async loadAll() {
     this.packs = [];
-    const builtinPacks = ['pack_primary_math'];
+    const builtinPacks = ['pack_primary_math', 'pack_war_calculus'];
     for (const packDir of builtinPacks) {
       try {
         const pack = await this._loadPack(packDir);
@@ -66,13 +66,26 @@ class PackLoader {
   }
 
   getNextLevel(compositeId) {
-    const all = this.getAllLevels();
-    for (let i = 0; i < all.length; i++) {
-      if (all[i].level.compositeId === compositeId && i < all.length - 1) {
-        return all[i + 1].level;
+    // 只返回同一关卡包内的下一关
+    const level = this.getLevel(compositeId);
+    if (!level) return null;
+    for (const pack of this.packs) {
+      const idx = pack.levels.findIndex(l => l.compositeId === compositeId);
+      if (idx >= 0 && idx < pack.levels.length - 1) {
+        return pack.levels[idx + 1];
       }
     }
     return null;
+  }
+
+  isFirstLevel(compositeId) {
+    // 判断是否是所在关卡包的第一关（第一关默认解锁，无需前置）
+    for (const pack of this.packs) {
+      if (pack.levels.length > 0 && pack.levels[0].compositeId === compositeId) {
+        return true;
+      }
+    }
+    return false;
   }
 
   async _fetchJSON(url) {

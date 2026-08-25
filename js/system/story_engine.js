@@ -1,7 +1,8 @@
 /**
  * StoryEngine - 视觉小说剧情引擎
  * 解析并线性执行 story.json 脚本
- * 支持节点类型：bg, bgm, show, hide, dialog, narration, handbook, puzzle, win
+ * 支持节点类型：bg, bgm, show, hide, dialog, narration, handbook, puzzle, sandbox, win
+ * 节点可选字段 if_outcome：仅当沙盘结局匹配时才执行该节点
  */
 class StoryEngine {
   constructor(game) {
@@ -71,6 +72,13 @@ class StoryEngine {
     }
   }
   async _executeNode(node) {
+    // if_outcome 条件过滤：沙盘结局不匹配则跳过该节点
+    if (node.if_outcome && this.game.session && this.game.session.sandboxOutcome) {
+      const outcomes = Array.isArray(node.if_outcome) ? node.if_outcome : [node.if_outcome];
+      if (!outcomes.includes(this.game.session.sandboxOutcome)) {
+        return false;
+      }
+    }
     switch (node.type) {
       case 'bg':
         this.game.ui.setBackground(this._resolvePath(node.src));
@@ -93,6 +101,8 @@ class StoryEngine {
         return false;
       case 'puzzle':
         return await this._startPuzzle(node);
+      case 'sandbox':
+        return await this._startSandbox(node);
       case 'win':
         this.game.onLevelWin();
         return true;
@@ -144,6 +154,32 @@ class StoryEngine {
       if (node.bgm) this.game.audio.playBGM(this._resolvePath(node.bgm));
       this.game.ui.loadPuzzleScene(node.scene);
     });
+  }
+  /** 军事沙盘节点：玩家调配兵力与天数，提交后计算结局 */
+  _startSandbox(node) {
+    return new Promise(resolve => {
+      this.waitingForPuzzle = true;
+      this.currentPuzzleId = 'sandbox';
+      this.currentPuzzleNode = node;
+      this._resolvePuzzle = resolve;
+      if (node.bgm) this.game.audio.playBGM(this._resolvePath(node.bgm));
+      // 初始化沙盘随机资源
+      if (this.game.session && this.game.session.initSandbox) {
+        this.game.session.initSandbox();
+      }
+      this.game.ui.showSandbox(node.config || {});
+    });
+  }
+  /** 沙盘提交完成，计算结局并继续 */
+  completeSandbox(outcome) {
+    if (this.waitingForPuzzle && this.currentPuzzleId === 'sandbox') {
+      this.waitingForPuzzle = false;
+      this.currentPuzzleId = null;
+      if (this.game.session) this.game.session.sandboxOutcome = outcome;
+      const r = this._resolvePuzzle;
+      this._resolvePuzzle = null;
+      r();
+    }
   }
   /** 用户点击继续 */
   advance() {

@@ -16,6 +16,9 @@ class Session {
     this.puzzleCompleted = {};
     this.iframe = null;
     this._ended = false;
+    // 军事沙盘相关
+    this.sandboxOutcome = null;
+    this.sandboxResources = null;
   }
 
   async start(levelId, meta, storyData, levelPath) {
@@ -25,6 +28,8 @@ class Session {
     this.handbookNotes = [];
     this.puzzleCompleted = {};
     this._ended = false;
+    this.sandboxOutcome = null;
+    this.sandboxResources = null;
 
     this.storyEngine = new StoryEngine(this.game);
     this.storyEngine.load(storyData);
@@ -82,6 +87,68 @@ class Session {
     if (this.storyEngine) {
       this.storyEngine.completePuzzle(puzzleId);
     }
+  }
+
+  /** 初始化沙盘随机资源（含防死局校验：确保存在完美通关解） */
+  initSandbox() {
+    let attempts = 0;
+    while (attempts < 50) {
+      const W = Math.floor(Math.random() * (720000 - 360000 + 1)) + 360000;
+      const Me = Math.floor(Math.random() * (48000 - 24000 + 1)) + 24000;
+      const Hay = Math.floor(Math.random() * (640000 - 320000 + 1)) + 320000;
+      const S1 = Math.floor(W / 9);
+      const S2 = Math.floor(Me / 0.5);
+      const S3 = Math.floor(Hay / 8);
+      const Smax = Math.min(S1, S2, S3);
+      let hasPerfect = false;
+      for (let Y = 12; Y <= 14; Y++) {
+        const maxX = Math.floor(Smax / Y / 100) * 100;
+        if (maxX >= 1000 && (maxX * Y) / Smax >= 0.9) {
+          hasPerfect = true;
+          break;
+        }
+      }
+      if (hasPerfect) {
+        this.sandboxResources = { W_total: W, Me_total: Me, Hay_total: Hay, S_max: Smax };
+        return this.sandboxResources;
+      }
+      attempts++;
+    }
+    this.sandboxResources = { W_total: 540000, Me_total: 36000, Hay_total: 480000, S_max: 60000 };
+    return this.sandboxResources;
+  }
+
+  /** 计算沙盘结局 */
+  calculateSandboxOutcome(X, Y) {
+    const r = this.sandboxResources;
+    if (!r) return { outcome: 'annihilated', detail: '资源未初始化' };
+    const water = 9 * X * Y;
+    const meat = 0.5 * X * Y;
+    const hay = 8 * X * Y;
+    const legal = water <= r.W_total && meat <= r.Me_total && hay <= r.Hay_total;
+    const personDays = X * Y;
+    const efficiency = personDays / r.S_max;
+    let outcome, detail;
+    if (!legal) {
+      outcome = 'annihilated';
+      detail = '补给耗尽，全军覆没';
+    } else if (Y < 12) {
+      outcome = 'short';
+      detail = '行军过急，无法抵境';
+    } else if (Y > 14) {
+      outcome = 'delayed';
+      detail = '行军拖沓，错失战机';
+    } else if (X < 1000) {
+      outcome = 'hard_fought';
+      detail = '兵力不足，苦战惨胜';
+    } else if (efficiency < 0.9) {
+      outcome = 'pass';
+      detail = '按时抵达，兵力保守';
+    } else {
+      outcome = 'perfect';
+      detail = '极致最优，史诗完胜';
+    }
+    return { outcome, detail, water, meat, hay, personDays, efficiency, legal };
   }
 
   destroy() {

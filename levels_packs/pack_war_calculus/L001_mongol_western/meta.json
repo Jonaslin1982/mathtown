@@ -1,0 +1,20 @@
+{
+  "level_id": "mongol_western",
+  "level_name": "蒙古西征·戈壁后勤推演",
+  "description": "1220年，成吉思汗大军横穿克孜勒库姆戈壁奇袭撒马尔罕。在固定预埋补给下，调配兵力与行军天数，算出最优后勤方案。多变量资源约束+极值优化思维。",
+  "mathematician": "统筹规划",
+  "difficulty": 4,
+  "estimated_time": 20,
+  "thumbnail": "assets/images/thumbnail.jpg",
+  "default_background": "assets/images/bg_steppe.jpg",
+  "default_bgm": "assets/audio/bgm_steppe.mp3",
+  "unlock_condition": {
+    "type": "always"
+  },
+  "badge": {
+    "name": "戈壁远征徽章",
+    "image": "assets/badges/badge_gobi.png",
+    "description": "在克孜勒库姆戈壁的生死后勤推演中，达成资源极致利用与战术时间最优的证明。"
+  },
+  "level_type": "sandbox"
+}

@@ -62,7 +62,7 @@ class UIManager {
       pack.levels.forEach(level => {
         totalLevels++;
         const cid = level.compositeId;
-        const unlocked = save.unlocked_levels.includes(cid);
+        const unlocked = this.game.packLoader.isFirstLevel(cid) || save.unlocked_levels.includes(cid);
         const completed = save.completed_levels && save.completed_levels[cid];
         const bestTime = save.best_times && save.best_times[cid];
         if (completed) completedLevels++;
@@ -278,6 +278,203 @@ class UIManager {
         this.game.session.onPuzzleComplete(puzzleId);
       }
     }, 300);
+  }
+
+  /** 军事沙盘：兵力与天数调配 */
+  showSandbox(config) {
+    this._inPuzzle = true;
+    this._sandboxConfig = config;
+    document.getElementById('dialog-arrow').style.display = 'none';
+    const container = document.getElementById('puzzle-container');
+    container.innerHTML = '';
+    const r = this.game.session.sandboxResources;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;padding:16px 24px;box-sizing:border-box;font-family:inherit;color:#3a2a1a;overflow-y:auto;';
+    // 标题
+    const title = document.createElement('div');
+    title.style.cssText = 'text-align:center;font-size:20px;font-weight:bold;margin-bottom:12px;color:#5a3a1a;letter-spacing:2px;';
+    title.textContent = '⚔ 戈壁后勤推演 ⚔';
+    wrap.appendChild(title);
+    // 预埋资源
+    const resRow = document.createElement('div');
+    resRow.style.cssText = 'display:flex;gap:12px;margin-bottom:16px;justify-content:center;';
+    const resItems = [
+      { label: '预埋水源', val: r.W_total, unit: '单位', icon: '💧', color: '#4a90d9' },
+      { label: '预埋肉食', val: r.Me_total, unit: '单位', icon: '🍖', color: '#c0392b' },
+      { label: '预埋马料', val: r.Hay_total, unit: '单位', icon: '🌾', color: '#d4a017' }
+    ];
+    resItems.forEach(item => {
+      const card = document.createElement('div');
+      card.style.cssText = 'flex:1;max-width:180px;background:rgba(255,248,230,0.9);border:2px solid ' + item.color + ';border-radius:8px;padding:8px 12px;text-align:center;';
+      card.innerHTML = '<div style="font-size:13px;color:#666;">' + item.icon + ' ' + item.label + '</div>' +
+        '<div style="font-size:20px;font-weight:bold;color:' + item.color + ';">' + item.val.toLocaleString() + '</div>' +
+        '<div style="font-size:11px;color:#999;">' + item.unit + '</div>';
+      resRow.appendChild(card);
+    });
+    wrap.appendChild(resRow);
+    // 消耗公式提示
+    const formula = document.createElement('div');
+    formula.style.cssText = 'text-align:center;font-size:12px;color:#8a7a6a;margin-bottom:14px;background:rgba(255,248,230,0.6);padding:6px;border-radius:4px;';
+    formula.innerHTML = '日耗：每兵每日 水9 / 肉0.5 / 马料8 单位 &nbsp;|&nbsp; 总耗 = 日耗 × 兵力 × 天数';
+    wrap.appendChild(formula);
+    // 滑块区域
+    const sliderArea = document.createElement('div');
+    sliderArea.style.cssText = 'background:rgba(255,248,230,0.85);border-radius:10px;padding:16px 20px;margin-bottom:14px;';
+    // 兵力滑块
+    const troopLabel = document.createElement('div');
+    troopLabel.style.cssText = 'display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;';
+    troopLabel.innerHTML = '<span>🐎 出征兵力（人，整百）</span><span id="sandbox-troop-val" style="font-weight:bold;color:#5a3a1a;">3000</span>';
+    sliderArea.appendChild(troopLabel);
+    const troopSlider = document.createElement('input');
+    troopSlider.type = 'range';
+    troopSlider.min = 100; troopSlider.max = 10000; troopSlider.step = 100; troopSlider.value = 3000;
+    troopSlider.style.cssText = 'width:100%;margin-bottom:14px;accent-color:#8b4513;';
+    sliderArea.appendChild(troopSlider);
+    // 天数滑块
+    const dayLabel = document.createElement('div');
+    dayLabel.style.cssText = 'display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;';
+    dayLabel.innerHTML = '<span>📅 行军天数（日，最短12日抵境）</span><span id="sandbox-day-val" style="font-weight:bold;color:#5a3a1a;">12</span>';
+    sliderArea.appendChild(dayLabel);
+    const daySlider = document.createElement('input');
+    daySlider.type = 'range';
+    daySlider.min = 1; daySlider.max = 30; daySlider.step = 1; daySlider.value = 12;
+    daySlider.style.cssText = 'width:100%;accent-color:#8b4513;';
+    sliderArea.appendChild(daySlider);
+    wrap.appendChild(sliderArea);
+    // 实时消耗显示
+    const consumeArea = document.createElement('div');
+    consumeArea.style.cssText = 'background:rgba(255,248,230,0.85);border-radius:10px;padding:12px 16px;margin-bottom:14px;';
+    const consumeTitle = document.createElement('div');
+    consumeTitle.style.cssText = 'font-size:14px;font-weight:bold;margin-bottom:8px;color:#5a3a1a;';
+    consumeTitle.textContent = '📊 预计总消耗';
+    consumeArea.appendChild(consumeTitle);
+    const consumeGrid = document.createElement('div');
+    consumeGrid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;';
+    const consumeItems = [
+      { id: 'c-water', label: '水', color: '#4a90d9' },
+      { id: 'c-meat', label: '肉', color: '#c0392b' },
+      { id: 'c-hay', label: '马料', color: '#d4a017' }
+    ];
+    consumeItems.forEach(item => {
+      const cell = document.createElement('div');
+      cell.style.cssText = 'text-align:center;padding:6px;border-radius:6px;background:rgba(255,255,255,0.5);';
+      cell.innerHTML = '<div style="font-size:11px;color:#888;">' + item.label + '</div>' +
+        '<div id="' + item.id + '" style="font-size:16px;font-weight:bold;color:' + item.color + ';">0</div>';
+      consumeGrid.appendChild(cell);
+    });
+    consumeArea.appendChild(consumeGrid);
+    const statusLine = document.createElement('div');
+    statusLine.id = 'sandbox-status';
+    statusLine.style.cssText = 'text-align:center;margin-top:8px;font-size:13px;font-weight:bold;';
+    consumeArea.appendChild(statusLine);
+    wrap.appendChild(consumeArea);
+    // 出征按钮
+    const btnRow = document.createElement('div');
+    btnRow.style.cssText = 'text-align:center;';
+    const marchBtn = document.createElement('button');
+    marchBtn.textContent = '⚔ 出征！';
+    marchBtn.style.cssText = 'padding:12px 48px;font-size:18px;font-weight:bold;background:linear-gradient(135deg,#8b4513,#a0522d);color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:4px;box-shadow:0 4px 12px rgba(139,69,19,0.4);';
+    btnRow.appendChild(marchBtn);
+    wrap.appendChild(btnRow);
+    container.appendChild(wrap);
+    // 实时计算
+    const updateCalc = () => {
+      const X = parseInt(troopSlider.value);
+      const Y = parseInt(daySlider.value);
+      document.getElementById('sandbox-troop-val').textContent = X;
+      document.getElementById('sandbox-day-val').textContent = Y;
+      const water = 9 * X * Y;
+      const meat = 0.5 * X * Y;
+      const hay = 8 * X * Y;
+      document.getElementById('c-water').textContent = water.toLocaleString();
+      document.getElementById('c-meat').textContent = meat.toLocaleString();
+      document.getElementById('c-hay').textContent = hay.toLocaleString();
+      const status = document.getElementById('sandbox-status');
+      const over = [];
+      if (water > r.W_total) over.push('水超' + (water - r.W_total).toLocaleString());
+      if (meat > r.Me_total) over.push('肉超' + (meat - r.Me_total).toLocaleString());
+      if (hay > r.Hay_total) over.push('马料超' + (hay - r.Hay_total).toLocaleString());
+      if (over.length > 0) {
+        status.textContent = '⚠ 补给不足：' + over.join('，');
+        status.style.color = '#c0392b';
+      } else if (Y < 12) {
+        status.textContent = '⚠ 行军过急：少于12日无法横穿戈壁';
+        status.style.color = '#e67e22';
+      } else if (Y > 14) {
+        status.textContent = '⚠ 行军拖沓：超过14日将错失战机';
+        status.style.color = '#e67e22';
+      } else if (X < 1000) {
+        status.textContent = '⚠ 兵力不足一千：恐将苦战';
+        status.style.color = '#e67e22';
+      } else {
+        const eff = (X * Y) / r.S_max;
+        status.textContent = '✓ 方案可行，资源利用率 ' + (eff * 100).toFixed(1) + '%';
+        status.style.color = '#27ae60';
+      }
+    };
+    troopSlider.addEventListener('input', updateCalc);
+    daySlider.addEventListener('input', updateCalc);
+    updateCalc();
+    // 出征
+    marchBtn.addEventListener('click', () => {
+      this.game.audio.playSFX('ui_click');
+      const X = parseInt(troopSlider.value);
+      const Y = parseInt(daySlider.value);
+      const result = this.game.session.calculateSandboxOutcome(X, Y);
+      this._showSandboxResult(result, X, Y);
+    });
+  }
+
+  /** 沙盘出征结果 */
+  _showSandboxResult(result, X, Y) {
+    const container = document.getElementById('puzzle-container');
+    container.innerHTML = '';
+    const isFail = result.outcome === 'annihilated' || result.outcome === 'short';
+    const outcomeMap = {
+      annihilated: { title: '💀 全军覆没', color: '#c0392b', icon: '💀' },
+      short: { title: '🏜 无法抵境', color: '#e67e22', icon: '🏜' },
+      delayed: { title: '⏳ 错失战机', color: '#d4a017', icon: '⏳' },
+      hard_fought: { title: '⚔ 苦战惨胜', color: '#e67e22', icon: '⚔' },
+      pass: { title: '✅ 合格通关', color: '#27ae60', icon: '✅' },
+      perfect: { title: '🏆 完美通关', color: '#8b4513', icon: '🏆' }
+    };
+    const info = outcomeMap[result.outcome] || outcomeMap.pass;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;';
+    const card = document.createElement('div');
+    card.style.cssText = 'background:rgba(255,248,230,0.95);border:3px solid ' + info.color + ';border-radius:16px;padding:28px 36px;max-width:520px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.3);';
+    card.innerHTML = '<div style="font-size:48px;margin-bottom:8px;">' + info.icon + '</div>' +
+      '<div style="font-size:24px;font-weight:bold;color:' + info.color + ';margin-bottom:16px;letter-spacing:2px;">' + info.title + '</div>' +
+      '<div style="font-size:14px;color:#5a4a3a;margin-bottom:12px;line-height:1.8;">' + result.detail + '</div>' +
+      '<div style="font-size:13px;color:#8a7a6a;margin-bottom:16px;line-height:1.8;">' +
+      '出征兵力：' + X.toLocaleString() + ' 人 &nbsp;|&nbsp; 行军天数：' + Y + ' 日<br>' +
+      '资源利用率：' + (result.efficiency * 100).toFixed(1) + '%' +
+      '</div>';
+    if (isFail) {
+      const retryBtn = document.createElement('button');
+      retryBtn.textContent = '🔄 重新推演';
+      retryBtn.style.cssText = 'padding:10px 32px;font-size:16px;font-weight:bold;background:linear-gradient(135deg,#8b4513,#a0522d);color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:2px;';
+      retryBtn.addEventListener('click', () => {
+        this.game.audio.playSFX('ui_click');
+        this.showSandbox(this._sandboxConfig || {});
+      });
+      card.appendChild(retryBtn);
+    } else {
+      const contBtn = document.createElement('button');
+      contBtn.textContent = '继续 →';
+      contBtn.style.cssText = 'padding:10px 32px;font-size:16px;font-weight:bold;background:linear-gradient(135deg,#8b4513,#a0522d);color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:2px;';
+      contBtn.addEventListener('click', () => {
+        this.game.audio.playSFX('ui_click');
+        this._inPuzzle = false;
+        container.innerHTML = '';
+        if (this.game.session && this.game.session.storyEngine) {
+          this.game.session.storyEngine.completeSandbox(result.outcome);
+        }
+      });
+      card.appendChild(contBtn);
+    }
+    wrap.appendChild(card);
+    container.appendChild(wrap);
   }
 
   _useHint() {
