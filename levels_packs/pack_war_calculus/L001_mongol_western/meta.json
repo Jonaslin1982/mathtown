@@ -11,10 +11,39 @@
   "unlock_condition": {
     "type": "always"
   },
-  "badge": {
-    "name": "戈壁远征徽章",
-    "image": "assets/badges/badge_gobi.png",
-    "description": "在克孜勒库姆戈壁的生死后勤推演中，达成资源极致利用与战术时间最优的证明。"
+  "badges": [
+    {
+      "tier": "bronze",
+      "tier_order": 1,
+      "name": "戈壁远征徽章",
+      "image": "assets/badges/badge_bronze.png",
+      "description": "成功穿越克孜勒库姆戈壁的证明。",
+      "outcomes": ["pass", "delayed"]
+    },
+    {
+      "tier": "silver",
+      "tier_order": 2,
+      "name": "戈壁苦战徽章",
+      "image": "assets/badges/badge_silver.png",
+      "description": "在补给极限中苦战惨胜的证明。",
+      "outcomes": ["hard_fought"]
+    },
+    {
+      "tier": "gold",
+      "tier_order": 3,
+      "name": "戈壁完美远征徽章",
+      "image": "assets/badges/badge_gold.png",
+      "description": "达成资源极致利用与战术时间最优的最高证明。",
+      "outcomes": ["perfect"]
+    }
+  ],
+  "ending_backgrounds": {
+    "perfect": "assets/images/endings/perfect.jpg",
+    "pass": "assets/images/endings/pass.jpg",
+    "hard_fought": "assets/images/endings/pass.jpg",
+    "delayed": "assets/images/endings/pass.jpg",
+    "annihilated": "assets/images/endings/fail.jpg",
+    "short": "assets/images/endings/fail.jpg"
   },
   "level_type": "sandbox"
 }

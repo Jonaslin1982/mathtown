@@ -104,7 +104,7 @@ class StoryEngine {
       case 'sandbox':
         return await this._startSandbox(node);
       case 'win':
-        this.game.onLevelWin();
+        this.game.onLevelWin(this.game.session && this.game.session.sandboxOutcome);
         return true;
       default:
         console.warn('Unknown story node type:', node.type);

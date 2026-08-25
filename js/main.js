@@ -110,27 +110,46 @@ class MathTownGame {
     }
   }
 
-  async onLevelWin() {
+  async onLevelWin(outcome) {
     if (!this.session || this.session._ended) return;
     const elapsedMs = this.session.elapsedMs;
     const timeStr = this.session.formatTime(elapsedMs);
     const levelInfo = this.packLoader.getLevel(this.currentLevelId);
-    // 立即停止计时器
+    const meta = levelInfo && levelInfo.meta;
     this.session._ended = true;
     if (this.session._timerInterval) {
       clearInterval(this.session._timerInterval);
       this.session._timerInterval = null;
     }
-    // 异步保存数据
+    let badgeInfo = null;
+    let endingBg = null;
+    if (meta && meta.badges && outcome) {
+      const matchedBadge = meta.badges.find(b => b.outcomes && b.outcomes.includes(outcome));
+      if (matchedBadge) {
+        badgeInfo = { name: matchedBadge.name, image: levelInfo.path + '/' + matchedBadge.image, tier: matchedBadge.tier, tier_order: matchedBadge.tier_order };
+      }
+      if (meta.ending_backgrounds && meta.ending_backgrounds[outcome]) {
+        endingBg = levelInfo.path + '/' + meta.ending_backgrounds[outcome];
+      }
+    } else if (meta && meta.badge) {
+      badgeInfo = { name: meta.badge.name, image: levelInfo.path + '/' + meta.badge.image };
+    }
     (async () => {
       try {
         const save = await this.storage.getSave();
         if (!save.completed_levels) save.completed_levels = {};
         if (!save.best_times) save.best_times = {};
         if (!save.unlocked_levels) save.unlocked_levels = [];
+        if (!save.badge_tiers) save.badge_tiers = {};
         save.completed_levels[this.currentLevelId] = true;
         if (!save.best_times[this.currentLevelId] || elapsedMs < save.best_times[this.currentLevelId]) {
           save.best_times[this.currentLevelId] = elapsedMs;
+        }
+        if (badgeInfo && badgeInfo.tier_order) {
+          const currentTier = save.badge_tiers[this.currentLevelId];
+          if (!currentTier || badgeInfo.tier_order > currentTier) {
+            save.badge_tiers[this.currentLevelId] = badgeInfo.tier_order;
+          }
         }
         const next = this.packLoader.getNextLevel(this.currentLevelId);
         if (next && !save.unlocked_levels.includes(next.compositeId)) {
@@ -141,14 +160,11 @@ class MathTownGame {
         console.error('保存通关数据失败:', e);
       }
     })();
-    // 立即销毁会话并显示结算
     if (this.session) {
       this.session.destroy();
       this.session = null;
     }
-    const badge = levelInfo && levelInfo.meta && levelInfo.meta.badge;
-    const badgeInfo = badge ? { name: badge.name, image: levelInfo.path + '/' + badge.image } : null;
-    this.ui.showSettlement({ timeStr, elapsedMs }, badgeInfo);
+    this.ui.showSettlement({ timeStr, elapsedMs, outcome, endingBg }, badgeInfo);
   }
 
   restartLevel() {

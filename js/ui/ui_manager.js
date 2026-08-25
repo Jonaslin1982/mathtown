@@ -630,6 +630,19 @@ class UIManager {
   showSettlement(result, badgeInfo) {
     this.showScreen('settlement');
     this.game.audio.playBGM('assets/audio/bgm_menu.mp3');
+    const bgEl = document.querySelector('#screen-settlement .settlement-bg');
+    if (bgEl) {
+      if (result.endingBg) {
+        bgEl.style.backgroundImage = 'url(' + result.endingBg + ')';
+        bgEl.style.backgroundSize = 'cover';
+        bgEl.style.backgroundPosition = 'center';
+        bgEl.style.opacity = '1';
+        bgEl.style.filter = 'brightness(0.55)';
+      } else {
+        bgEl.style.backgroundImage = '';
+        bgEl.style.filter = '';
+      }
+    }
     document.getElementById('set-time').textContent = result.timeStr;
     const badgeEl = document.getElementById('set-badge');
     if (badgeInfo) {
