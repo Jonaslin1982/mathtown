@@ -672,12 +672,23 @@ class UIManager {
       total++;
       const cid = level.compositeId;
       const completed = save.completed_levels && save.completed_levels[cid];
-      const badge = level.meta.badge;
+      const tierOrder = save.badge_tiers && save.badge_tiers[cid];
+      let badge = null;
+      if (level.meta.badges && level.meta.badges.length > 0) {
+        if (tierOrder) {
+          badge = level.meta.badges.find(b => b.tier_order === tierOrder) || level.meta.badges[level.meta.badges.length - 1];
+        } else if (completed) {
+          badge = level.meta.badges[0];
+        }
+      } else {
+        badge = level.meta.badge;
+      }
       if (completed) obtained++;
       const cell = document.createElement('div');
       cell.className = 'gallery-badge-vn' + (completed ? '' : ' locked');
       if (completed && badge) {
-        cell.innerHTML = '<img src="' + (level.path + '/' + badge.image) + '" onerror="this.style.display=\'none\'"><div class="g-name-vn">' + badge.name + '</div><div class="g-level-vn">' + level.meta.level_name + '</div>';
+        const badgeImg = level.path + '/' + badge.image;
+        cell.innerHTML = '<img src="' + badgeImg + '" onerror="this.style.display=\'none\'"><div class="g-name-vn">' + badge.name + '</div><div class="g-level-vn">' + level.meta.level_name + '</div>';
       } else {
         cell.innerHTML = '<div class="g-silhouette-vn">?</div><div class="g-name-vn">???</div><div class="g-level-vn">未通关</div>';
       }
